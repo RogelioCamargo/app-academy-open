@@ -21,20 +21,18 @@ def merge(hash_1, hash_2)
 	new_hash
 end
 
-def censor(str, c_words)
-	new_str = "";
+def censor(str, curse_words)
 	words_array = str.split(" ");
 
-	words_array.each_with_index do |word, idx|
-		if c_words.include?(word.downcase)
-			new_str += word.gsub(/[aeiouAEIOU]/, "*")
+	words = words_array.map do |word|
+		if curse_words.include?(word.downcase)
+			word.gsub(/[aeiouAEIOU]/, "*")
 		else
-			new_str += word
+			word
 		end
-		new_str += " "
 	end
 
-	new_str.strip
+	words.join(" ")
 end
 
 def power_of_two?(num)
