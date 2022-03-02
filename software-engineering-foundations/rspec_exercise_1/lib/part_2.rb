@@ -15,7 +15,7 @@ def vowel_counts(str)
 end
 
 def caesar_cipher(str, num) 
-	alphabet = "abcdefghijklmnopqrstuvwxyz"
+	alphabet = ("a".."z").to_a
 
 	new_str = str[0..-1]
 	str.each_char.with_index do |char, idx|
