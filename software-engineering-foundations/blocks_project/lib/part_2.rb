@@ -1,7 +1,5 @@
 def all_words_capitalized?(array) 
-	array.all? do |word|
-		word[0] == word[0].upcase && word[1..-1] == word[1..-1].downcase
-	end
+	array.all? { |word| word.capitalize == word }
 end
 
 def no_valid_url?(array)
@@ -11,6 +9,6 @@ end
 def any_passing_students?(array)
 	array.any? do |person|
 		grades = person[:grades]
-		(grades.sum / grades.length) > 75
+		(grades.sum / grades.length) >= 75
 	end
 end
