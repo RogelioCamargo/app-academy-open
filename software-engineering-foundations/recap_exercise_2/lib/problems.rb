@@ -1,7 +1,7 @@
 # Write a method, least_common_multiple, that takes in two numbers and returns the smallest number that is a mutiple
 # of both of the given numbers
 def least_common_multiple(num_1, num_2)
-	(2...num_1 * num_2).each do |i|
+	(1...num_1 * num_2).each do |i|
 		return i if i % num_1 == 0 && i % num_2 == 0
 	end
 end
@@ -10,26 +10,15 @@ end
 # Write a method, most_frequent_bigram, that takes in a string and returns the two adjacent letters that appear the
 # most in the string.
 def most_frequent_bigram(str)
-	max = ""
-	max_count = 0
-
-	(0...str.length).each do |idx_1|
-		hash = Hash.new(0)
-		(idx_1...str.length - 1).each do |idx_2|
-			bigram = str[idx_2...idx_2 + 2]
-			# puts bigram
-			hash[bigram] += 1
-		end
-		
-		hash.each do |k, v|
-			if v > max_count
-				max = k
-				max_count = v
-			end
-		end
+	hash = Hash.new(0)
+	(0...str.length - 1).each do |idx|
+		bigram = str[idx..idx + 1]
+		# puts bigram
+		hash[bigram] += 1
 	end
 
-	max
+	sorted = hash.sort_by { |k, v| v }
+	sorted.last[0]
 end
 
 
