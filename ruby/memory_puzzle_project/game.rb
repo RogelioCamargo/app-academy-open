@@ -54,7 +54,8 @@ class MemoryGame
 	attr_reader :board
 end
 
-player = HumanPlayer.new
-memory_game = MemoryGame.new(3, player)
-memory_game.play
+if $PROGRAM_NAME == __FILE__
+  size = ARGV.empty? ? 4 : ARGV.shift.to_i
+  MemoryGame.new(size, HumanPlayer.new).play
+end
 
