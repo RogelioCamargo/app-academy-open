@@ -10,7 +10,7 @@ class Card
 
 		values = values.shuffle.take(number_of_pairs) * 2
 		values.shuffle!
-		values.map { |value| self.new(values) }
+		values.map { |card_value| self.new(card_value) }
 	end
 
 	attr_reader :value
@@ -29,14 +29,14 @@ class Card
 	end
 
 	def revealed?
-		@reveal
+		@revealed
 	end
 
 	def to_s
-		revealed? ? value.to_s : " "
+		revealed? ? self.value.to_s : " "
 	end
 
 	def ==(other_card)
-		other_card.is_a?(self.class) && value == other_card.value
+		other_card.is_a?(self.class) && self.value == other_card.value
 	end
 end
