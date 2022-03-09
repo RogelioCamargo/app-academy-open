@@ -15,6 +15,10 @@ class Player
 		puts "Player: #{name}"
 	end
 
+	def to_s
+		name
+	end
+
 	def guess(fragment)
 		puts "Fragment: #{fragment}"
 		puts "Add a letter!".capitalize
