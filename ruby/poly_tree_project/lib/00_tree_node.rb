@@ -40,6 +40,30 @@ class PolyTreeNode
     child.parent = nil
 	end
 
+	def dfs(target)
+		return self if target == self.value
+
+		self.children.each do |child|
+			result = child.dfs(target)
+			return result unless result.nil?
+		end
+
+		nil
+	end
+
+	def bfs(target)
+		queue = [self]
+		until queue.empty?
+			node = queue.shift
+			return node if node.value == target
+			node.children.each do |child|
+				queue.push(child)
+			end
+		end
+
+		nil
+	end
+
 	protected 
 
 	# Protected method to give a node direct access to another node's
