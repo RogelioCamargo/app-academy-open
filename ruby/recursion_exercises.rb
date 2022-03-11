@@ -5,10 +5,10 @@ def sum_to(n)
 	n + sum_to(n - 1)
 end
 
-puts sum_to(5)  # => returns 15
-puts sum_to(1)  # => returns 1
-puts sum_to(9)  # => returns 45
-puts sum_to(-8)  # => returns nil
+# puts sum_to(5)  # => returns 15
+# puts sum_to(1)  # => returns 1
+# puts sum_to(9)  # => returns 45
+# puts sum_to(-8)  # => returns nil
 
 def add_numbers(array)
 	return nil if array.length == 0
@@ -258,6 +258,17 @@ def merge_sort(array)
 	merge(left, right)
 end
 
+def quick_sort(array)
+	return array if array.length <= 1
+
+	pivot = array.first
+	left_side = array[1..-1].select { |value| value < pivot }
+	right_side = array[1..-1].select { |value| value >= pivot }
+
+	quick_sort(left_side) + [pivot] + quick_sort(right_side)
+end
+
+p quick_sort([38, 27, 43, 3, 9, 82, 10]) # => [3, 9, 10, 27, 38, 43, 82]
 # p merge_sort([38, 27, 43, 3, 9, 82, 10]) # => [3, 9, 10, 27, 38, 43, 82]
 
 def make_better_change(target, coins = [25, 10, 5, 1])
@@ -282,4 +293,4 @@ def make_better_change(target, coins = [25, 10, 5, 1])
 	best_change
 end
 
-p make_better_change(24, [10,7,1]) # => [10, 7, 7]
+# p make_better_change(24, [10,7,1]) # => [10, 7, 7]
