@@ -5,10 +5,10 @@ def sum_to(n)
 	n + sum_to(n - 1)
 end
 
-# puts sum_to(5)  # => returns 15
-# puts sum_to(1)  # => returns 1
-# puts sum_to(9)  # => returns 45
-# puts sum_to(-8)  # => returns nil
+puts sum_to(5)  # => returns 15
+puts sum_to(1)  # => returns 1
+puts sum_to(9)  # => returns 45
+puts sum_to(-8)  # => returns nil
 
 def add_numbers(array)
 	return nil if array.length == 0
