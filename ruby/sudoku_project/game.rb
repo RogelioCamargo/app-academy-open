@@ -52,5 +52,7 @@ class Game
 	attr_reader :board
 end
 
+
+
 game = Game.new("sudoku1.txt")
 game.play

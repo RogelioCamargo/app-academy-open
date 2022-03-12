@@ -79,11 +79,3 @@ class Board
     (0..8).to_a.map { |i| square(i) }
   end
 end
-
-# grid = Board.from_file("./puzzles/sudoku1_almost.txt")
-# grid = Board.from_file("./puzzles/sudoku1_solved.txt")
-# board = Board.new(grid)
-
-# board.render
-
-# puts board.solved?
