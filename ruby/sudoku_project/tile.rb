@@ -3,16 +3,26 @@ require "colorize"
 class Tile
 	attr_reader :value
 
-	def initialize(value, revealed = false)
+	def initialize(value)
 		@value = value
-		@revealed = revealed
+		@given = value == 0 ? true : false
+	end
+
+	def value=(new_value)
+		@value = new_value unless given?
 	end
 
 	def to_s
-		revealed? ? value.to_s.colorize(:red) : "-"
+		value.to_s.colorize(color)
 	end
 
-	def revealed?
-		@revealed
+	private
+
+	def color
+		given? ? :yellow : :red
+	end
+
+	def given?
+		@given
 	end
 end
