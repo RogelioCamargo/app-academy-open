@@ -67,5 +67,8 @@ class WordChainer
 
 end
 
-word_chainer = WordChainer.new("dictionary.txt")
-p word_chainer.run("duck", "ruby")
+if $PROGRAM_NAME == __FILE__
+  # provide file name on command line
+	filename, word_one, word_two = ARGV
+  p WordChainer.new(filename).run(word_one, word_two)
+end
