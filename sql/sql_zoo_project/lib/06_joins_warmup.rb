@@ -125,9 +125,9 @@ def alien_cast
 		SELECT 
 			name
 		FROM
-			castings
-		JOIN
 			actors
+		JOIN
+			castings
 		ON
 			castings.actor_id = actors.id
 		JOIN
