@@ -4,7 +4,7 @@ class QuestionFollow
 	attr_accessor :id, :question_id, :user_id
 	
 	def self.find_by_id(id)
-		question_folow = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
+		question_folow = QuestionsDatabase.get_first_row(<<-SQL, id)
 			SELECT *
 			FROM question_folows
 			WHERE id = ?

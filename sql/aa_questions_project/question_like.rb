@@ -4,7 +4,7 @@ class QuestionLike
 	attr_accessor :id, :question_id, :user_id
 	
 	def self.find_by_id(id)
-		question_like = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
+		question_like = QuestionsDatabase.get_first_row(<<-SQL, id)
 			SELECT *
 			FROM question_likes
 			WHERE id = ?

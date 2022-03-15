@@ -4,7 +4,7 @@ class Question
 	attr_accessor :id, :title, :body, :author_id
 
 	def self.find_by_id(question_id)
-		question = QuestionsDatabase.instance.get_first_row(<<-SQL, question_id)
+		question = QuestionsDatabase.get_first_row(<<-SQL, question_id)
 			SELECT *
 			FROM questions
 			WHERE id = ?
@@ -15,13 +15,13 @@ class Question
 	end
 
 	def self.find_by_author_id(author_id)
-		questions = QuestionsDatabase.instance.execute(<<-SQL, author_id)
+		questions = QuestionsDatabase.execute(<<-SQL, author_id)
 			SELECT *
 			FROM questions
 			WHERE author_id = ?
 		SQL
 		return nil unless questions.length > 0
-		
+
 		questions.map { |question| Question.new(question) }
 	end
 
