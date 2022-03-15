@@ -1,7 +1,10 @@
 require_relative 'questions_database'
+require_relative 'user'
+require_relative 'reply'
 
 class Question
-	attr_accessor :id, :title, :body, :author_id
+	attr_reader :id
+	attr_accessor :title, :body, :author_id
 
 	def self.find_by_id(question_id)
 		question = QuestionsDatabase.get_first_row(<<-SQL, question_id)
@@ -30,5 +33,13 @@ class Question
 		@title = options['title']
 		@body = options['body']
 		@author_id = options['author_id']
+	end
+
+	def author
+		User.find_by_id(self.author_id)
+	end
+
+	def replies
+		Reply.find_by_question_id(self.author_id)
 	end
 end

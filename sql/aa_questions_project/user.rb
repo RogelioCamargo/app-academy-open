@@ -1,5 +1,6 @@
 require_relative 'questions_database'
 require_relative 'question'
+require_relative 'reply'
 
 class User
 	attr_reader :id
@@ -32,13 +33,10 @@ class User
 	end
 
 	def authored_questions
-		questions = QuestionsDatabase.execute(<<-SQL, self.id)
-			SELECT *
-			FROM questions
-			WHERE author_id = ?
-		SQL
-		return nil unless questions.length > 0
+		Question.find_by_author_id(self.id)
+	end
 
-		questions.map { |question| Question.new(question) }
+	def authored_replies
+		Reply.find_by_user_id(self.id)
 	end
 end
