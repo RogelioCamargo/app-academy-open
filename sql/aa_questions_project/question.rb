@@ -14,6 +14,16 @@ class Question
 		Question.new(question)
 	end
 
+	def self.find_by_author_id(author_id)
+		questions = QuestionsDatabase.instance.execute(<<-SQL, author_id)
+			SELECT *
+			FROM questions
+			WHERE author_id = ?
+		SQL
+		return nil unless questions.length > 0
+		
+		questions.map { |question| Question.new(question) }
+	end
 
 	def initialize(options)
 		@id = options['id']
