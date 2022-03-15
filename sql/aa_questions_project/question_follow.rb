@@ -1,7 +1,36 @@
 require_relative 'questions_database'
+require_relative 'question'
+require_relative 'user'
 
 class QuestionFollow
-	attr_accessor :id, :question_id, :user_id
+	attr_reader :id
+	attr_accessor :question_id, :user_id
+
+	def self.followers_for_question_id(question_id)
+		users_data = QuestionsDatabase.execute(<<-SQL, question_id)
+			SELECT users.*
+			FROM users
+			JOIN question_follows
+			ON question_follows.user_id = users.id
+			WHERE question_follows.question_id = ?
+		SQL
+		return nil unless users_data.length > 0
+
+		users_data.map { |user| User.new(user) }
+	end
+
+	def self.followed_questions_for_user_id(user_id)
+		questions_data = QuestionsDatabase.execute(<<-SQL, user_id)
+			SELECT questions.*
+			FROM questions
+			JOIN question_follows
+			ON question_follows.question_id = questions.id
+			WHERE question_follows.user_id = ?
+		SQL
+		return nil unless questions_data.length > 0
+
+		questions_data.map { |question| Question.new(question) }
+	end
 	
 	def self.find_by_id(id)
 		question_folow = QuestionsDatabase.get_first_row(<<-SQL, id)

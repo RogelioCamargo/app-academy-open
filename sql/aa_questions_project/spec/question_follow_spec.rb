@@ -14,7 +14,7 @@ describe QuestionFollow do
     end
 
     it 'returns an array of user objects' do 
-      users = described_class.followers_for_question_id(1)
+      users = described_class.followers_for_question_id(3)
       expect(users).to all(be_an(User))
     end
 
