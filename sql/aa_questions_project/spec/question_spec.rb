@@ -8,18 +8,18 @@ describe Question do
   
   describe '::find' do 
     it 'returns an instance of the question class' do 
-      question = described_class.find(1)
+      question = described_class.find_by_id(1)
       expect(question).to be_kind_of(described_class)
     end 
     
     it 'returns the question with the correct id' do
-      question = described_class.find(1)
+      question = described_class.find_by_id(1)
       expect(question.id).to eq(1)
     end 
     
     it 'only looks for the first row in the questions table' do 
       expect(QuestionsDatabase).to receive(:get_first_row).exactly(1).times.and_call_original
-      described_class.find(1)
+      described_class.find_by_id(1)
     end 
   end
   
@@ -63,19 +63,19 @@ describe Question do
     
     it 'persists a new question to the database' do 
       question.save
-      expect(described_class.find(4)).to_not be_nil
+      expect(described_class.find_by_id(4)).to_not be_nil
     end 
     
     it "persists an updated question to the database" do 
       question.save
       question.title = "updated_title"
       question.save
-      expect(described_class.find(4).title).to eq("updated_title")
+      expect(described_class.find_by_id(4).title).to eq("updated_title")
     end 
   end  
  
   describe '#author' do 
-    subject(:question) {described_class.find(1)}
+    subject(:question) {described_class.find_by_id(1)}
     let(:user) { class_double("User").as_stubbed_const }
 
     it 'calls QuestionFollow::followers_for_question_id' do 
@@ -85,7 +85,7 @@ describe Question do
   end
   
   describe '#followers' do 
-    subject(:question) { described_class.find(3) }
+    subject(:question) { described_class.find_by_id(3) }
     let(:questionfollow) { class_double("QuestionFollow").as_stubbed_const }
     
     it 'calls QuestionFollow::followers_for_question_id' do 
@@ -95,7 +95,7 @@ describe Question do
   end 
  
   describe '#num_likes' do 
-    subject(:question) { described_class.find(1) }
+    subject(:question) { described_class.find_by_id(1) }
     let(:questionlike) { class_double("QuestionLike").as_stubbed_const }
     
     it 'calls QuestionLike::num_likes_for_question_id' do 
@@ -105,7 +105,7 @@ describe Question do
   end 
 
   describe '#replies' do 
-    subject(:question) { described_class.find(3) }
+    subject(:question) { described_class.find_by_id(3) }
     let (:reply) { class_double("Reply").as_stubbed_const } 
 
     it 'calls Reply::find_by_question_id' do 
