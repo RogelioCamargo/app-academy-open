@@ -4,13 +4,14 @@ class QuestionFollow
 	attr_accessor :id, :question_id, :user_id
 	
 	def self.find_by_id(id)
-		question_like = QuestionsDatabase.instance.execute(<<-SQL, id)
+		question_folow = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
 			SELECT *
-			FROM question_likes
+			FROM question_folows
 			WHERE id = ?
 		SQL
+		return nil if question_folow.nil?
 
-		QuestionLike.new(question_like.first)
+		QuestionLike.new(question_folow)
 	end
 
 	def initialize(options)

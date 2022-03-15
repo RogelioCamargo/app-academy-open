@@ -4,13 +4,14 @@ class Reply
 	attr_accessor :id, :question_id, :parent_reply_id, :author_id, :body
 
 	def self.find_by_id(id)
-		reply = QuestionsDatabase.instance.execute(<<-SQL, id)
+		reply = QuestionsDatabase.instance.get_first_row(<<-SQL, id)
 			SELECT *
 			FROM replies
 			WHERE id = ?
 		SQL
+		return nil if reply.nil?
 
-		Reply.new(reply.first)
+		Reply.new(reply)
 	end
 
 	def initialize(options)
