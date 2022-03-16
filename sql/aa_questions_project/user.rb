@@ -59,4 +59,21 @@ class User
 			WHERE questions.author_id = ?
 		SQL
 	end
+
+	def save
+		if @id.nil?
+			QuestionsDatabase.execute(<<-SQL, self.fname, self.lname)
+				INSERT INTO users (fname, lname)
+				VALUES (?, ?)
+			SQL
+			@id = QuestionsDatabase.last_insert_row_id
+		else
+			QuestionsDatabase.execute(<<-SQL, self.fname, self.lname, self.id)
+				UPDATE users
+				SET fname = ?, lname = ?
+				WHERE id = ?
+			SQL
+		end
+		self
+	end
 end

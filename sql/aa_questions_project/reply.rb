@@ -3,7 +3,8 @@ require_relative 'user'
 require_relative 'question'
 
 class Reply
-	attr_accessor :id, :question_id, :parent_reply_id, :author_id, :body
+	attr_reader :id
+	attr_accessor :question_id, :parent_reply_id, :author_id, :body
 
 	def self.find(reply_id)
 		reply = QuestionsDatabase.get_first_row(<<-SQL, reply_id)
@@ -71,5 +72,22 @@ class Reply
 
 	def child_replies
 		Reply.find_by_parent_id(self.id)
+	end
+
+	def save
+		if @id.nil?
+			QuestionsDatabase.execute(<<-SQL, self.question_id, self.parent_reply_id, self.author_id, self.body)
+				INSERT INTO replies (question_id, parent_reply_id, author_id, body)
+				VALUES (?, ?, ?, ?)
+			SQL
+			@id = QuestionsDatabase.last_insert_row_id
+		else
+			QuestionsDatabase.execute(<<-SQL, self.question_id, self.parent_reply_id, self.author_id, self.body, self.id)
+				UPDATE replies
+				SET question_id = ?, parent_reply_id = ?, author_id = ?, body = ?
+				WHERE id = ?
+			SQL
+		end
+		self
 	end
 end
