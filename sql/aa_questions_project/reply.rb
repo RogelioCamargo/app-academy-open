@@ -5,7 +5,7 @@ require_relative 'question'
 class Reply
 	attr_accessor :id, :question_id, :parent_reply_id, :author_id, :body
 
-	def self.find_by_id(reply_id)
+	def self.find(reply_id)
 		reply = QuestionsDatabase.get_first_row(<<-SQL, reply_id)
 			SELECT *
 			FROM replies
@@ -22,7 +22,7 @@ class Reply
 			FROM replies
 			WHERE parent_reply_id = ?
 		SQL
-		return nil unless child_replies.length > 0
+		return nil if child_replies.nil?
 
 		child_replies.map { |child_reply| Reply.new(child_reply) }
 	end
@@ -62,11 +62,11 @@ class Reply
 	end
 
 	def question
-		Question.find_by_id(self.question_id)
+		Question.find(self.question_id)
 	end
 
 	def parent_reply
-		Reply.find_by_id(self.parent_reply_id)
+		Reply.find(self.parent_reply_id)
 	end
 
 	def child_replies

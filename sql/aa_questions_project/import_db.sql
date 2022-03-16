@@ -61,8 +61,8 @@ WHERE
 
 CREATE TABLE question_follows (
 	id INTEGER PRIMARY KEY,
-	question_id INTEGER NOT NULL,
 	user_id INTEGER NOT NULL,
+	question_id INTEGER NOT NULL,
 
 	FOREIGN KEY (question_id) REFERENCES questions(id),
 	FOREIGN KEY (user_id) REFERENCES users(id)
@@ -114,11 +114,11 @@ VALUES
 
 CREATE TABLE question_likes (
 	id INTEGER PRIMARY KEY,
-	question_id INTEGER NOT NULL,
 	user_id INTEGER NOT NULL,
+	question_id INTEGER NOT NULL,
 
-	FOREIGN KEY (question_id) REFERENCES questions(id),
-	FOREIGN KEY (user_id) REFERENCES users(id)
+	FOREIGN KEY (user_id) REFERENCES users(id),
+	FOREIGN KEY (question_id) REFERENCES questions(id)
 );
 
 INSERT INTO
@@ -127,3 +127,6 @@ VALUES
   ((SELECT id FROM users WHERE fname = "Kush" AND lname = "Patel"),
   (SELECT id FROM questions WHERE title = "Earl Question")
 );
+
+INSERT INTO question_likes (user_id, question_id) VALUES (1, 1);
+INSERT INTO question_likes (user_id, question_id) VALUES (1, 2);

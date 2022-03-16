@@ -68,7 +68,7 @@ describe QuestionLike do
     it 'correctly returns the most liked questions' do 
       questions = described_class.most_liked_questions(2)
       question_ids = questions.map { |question| question.id }
-      expect(question_ids).to match_array([1,2])
+      expect(question_ids).to match_array([2,3])
     end 
   end
 end 

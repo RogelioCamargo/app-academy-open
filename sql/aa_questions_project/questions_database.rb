@@ -15,7 +15,6 @@ class QuestionsDatabase < SQLite3::Database
 
 	def self.instance
     reset! if @database.nil?
-		puts "INSTANCE CALLED"
     @database
   end 
 
