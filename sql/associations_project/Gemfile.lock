@@ -40,9 +40,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    annotate (3.2.0)
-      activerecord (>= 3.2, < 8.0)
-      rake (>= 10.4, < 14.0)
+    annotate (2.4.0)
     arel (8.0.0)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
@@ -187,7 +185,7 @@ PLATFORMS
   x86_64-darwin-19
 
 DEPENDENCIES
-  annotate
+  annotate (= 2.4.0)
   better_errors
   binding_of_caller
   byebug
