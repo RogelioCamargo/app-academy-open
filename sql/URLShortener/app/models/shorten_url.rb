@@ -15,6 +15,7 @@ class ShortenUrl < ApplicationRecord
 		primary_key: :id
 
 	has_many :visitors,
+		-> { distinct },
 		through: :visits,
 		source: :visitor
 
@@ -31,5 +32,24 @@ class ShortenUrl < ApplicationRecord
 			long_url: long_url,
 			submitter_id: user.id
 		)
+	end
+
+	def num_clicks
+		visits.count
+	end
+
+	def num_uniques
+		# visits.select(:visitor_id).distinct.count
+		visitors.count
+	end
+
+	def num_recent_uniques
+		# visits
+		# 	.select(:visitor_id)
+		# 	.where('created_at > ?', 10.minutes.ago)
+		# 	.distinct
+		# 	.count
+
+		visitors.where('visits.created_at > ?', 10.minutes.ago).count
 	end
 end
