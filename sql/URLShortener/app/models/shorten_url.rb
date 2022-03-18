@@ -9,6 +9,7 @@
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
 #
+
 require 'securerandom'
 
 class ShortenUrl < ApplicationRecord
@@ -63,5 +64,9 @@ class ShortenUrl < ApplicationRecord
 
 		visitors.where('visits.created_at > ?', 10.minutes.ago).count
 	end
+
+	# def no_spamming
+
+	# end
 end
 
