@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: shorten_urls
+#
+#  id           :integer(8)      not null, primary key
+#  short_url    :string          not null
+#  long_url     :string          not null
+#  submitter_id :integer(4)      not null
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
+#
 require 'securerandom'
 
 class ShortenUrl < ApplicationRecord
@@ -53,3 +64,4 @@ class ShortenUrl < ApplicationRecord
 		visitors.where('visits.created_at > ?', 10.minutes.ago).count
 	end
 end
+
