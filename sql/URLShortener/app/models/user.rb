@@ -1,13 +1,3 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id         :integer(8)      not null, primary key
-#  email      :string          not null
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#
-
 class User < ApplicationRecord
 	validates :email, presence: true, uniqueness: true
 
@@ -26,4 +16,16 @@ class User < ApplicationRecord
 		through: :visits,
 		source: :shorten_url
 end
+
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :integer(8)      not null, primary key
+#  email      :string          not null
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#  premium    :boolean
+#
 
