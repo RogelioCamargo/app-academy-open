@@ -26,11 +26,22 @@ class ShortenUrl < ApplicationRecord
 		class_name: :Visit,
 		foreign_key: :shorten_url,
 		primary_key: :id
+		dependent: :destroy
 
 	has_many :visitors,
 		-> { distinct },
 		through: :visits,
 		source: :visitor
+
+	has_many :taggings,
+		class_name: :Tagging,
+    foreign_key: :shorten_url_id,
+    primary_key: :id,
+    dependent: :destroy
+
+  has_many :tag_topics,
+    through: :taggings,
+    source: :tag_topic
 
 	def self.random_code 	
 		loop do 
@@ -84,5 +95,39 @@ class ShortenUrl < ApplicationRecord
 			
 		errors['Only'] << "premum members can create more than 5 short urls" if total_submissions > 5
 	end
+
+
+	def self.prune(n)
+    ShortenUrl
+      .joins(:submitter)
+      .joins('LEFT JOIN visits ON visits.shortened_url_id = shortened_urls.id')
+      .where("(shortened_urls.id IN (
+        SELECT shortened_urls.id
+        FROM shortened_urls
+        JOIN visits
+        ON visits.shortened_url_id = shortened_urls.id
+        GROUP BY shortened_urls.id
+        HAVING MAX(visits.created_at) < \'#{n.minute.ago}\'
+      ) OR (
+        visits.id IS NULL and shortened_urls.created_at < \'#{n.minutes.ago}\'
+      )) AND users.premium = \'f\'")
+      .destroy_all
+
+    # The sql for the query would be:
+    #
+    # SELECT shortened_urls.*
+    # FROM shortened_urls
+    # JOIN users ON users.id = shortened_urls.submitter_id
+    # LEFT JOIN visits ON visits.shortened_url_id = shortened_urls.id
+    # WHERE (shortened_urls.id IN (
+    #   SELECT shortened_urls.id
+    #   FROM shortened_urls
+    #   JOIN visits ON visits.shortened_url_id = shortened_urls.id
+    #   GROUP BY shortened_urls.id
+    #   HAVING MAX(visits.created_at) < "#{n.minute.ago}"
+    # ) OR (
+    #   visits.id IS NULL and shortened_urls.created_at < '#{n.minutes.ago}'
+    # )) AND users.premium = 'f'
+  end
 end
 
