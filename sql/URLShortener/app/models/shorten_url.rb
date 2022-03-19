@@ -15,6 +15,7 @@ require 'securerandom'
 class ShortenUrl < ApplicationRecord
 	validates :short_url, :long_url, :submitter_id, presence: true
 	validates :short_url, uniqueness: true
+	validate :no_spamming, :nonpremium_max
 
 	belongs_to :submitter, 
 		class_name: :User,
@@ -65,8 +66,23 @@ class ShortenUrl < ApplicationRecord
 		visitors.where('visits.created_at > ?', 10.minutes.ago).count
 	end
 
-	# def no_spamming
+	def no_spamming
+		submissions_in_last_minute = ShortenUrl
+			.where('created_at >= ?', 1.minute.ago)
+			.where(submitter_id: submitter_id)
+			.length
 
-	# end
+		errors['maximum'] << 'of 5 submissions per minute' if submissions_in_last_minute > 5
+	end
+
+	def nonpremium_max
+		return if User.find(submitter_id: submitter_id).premium
+
+		total_submissions = ShortenUrl
+			.where(submitter_id: submitter_id)
+			.length
+			
+		errors['Only'] << "premum members can create more than 5 short urls" if total_submissions > 5
+	end
 end
 
