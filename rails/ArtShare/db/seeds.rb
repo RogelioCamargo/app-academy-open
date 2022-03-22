@@ -14,6 +14,6 @@ ArtworkShare.destroy_all
 user1 = User.create!(username: 'robert')
 user2 = User.create!(username: 'bill')
 artwork1 = Artwork.create!(title: 'nighthawks', image_url: 'google.com', artist_id: user1.id)
-artwork2 = Artwork.create!(title: 'mona lisa', image_url: 'google1.com', artist_id: user2.id, favorite: true)
+artwork2 = Artwork.create!(title: 'mona lisa', image_url: 'google1.com', artist_id: user2.id)
 ArtworkShare.create!(artwork_id: artwork1.id, viewer_id: user2.id, favorite: true)
 ArtworkShare.create!(artwork_id: artwork2.id, viewer_id: user2.id)
