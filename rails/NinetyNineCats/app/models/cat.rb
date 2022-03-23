@@ -10,6 +10,6 @@ class Cat < ApplicationRecord
 	validates :sex, inclusion: %w(M F)
 
 	def age 
-		time_ago_in_words(:birth_date)
+		time_ago_in_words(birth_date)
 	end
 end
