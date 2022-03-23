@@ -1,6 +1,12 @@
 class UsersController < ApplicationController
 	def index
-		render json: User.all
+		if params[:search]
+			search = params[:search]
+			user = User.where('username LIKE ANY(array[?])', ["%#{search}%", "%#{search}", "#{search}%"])
+			render json: user
+		else
+			render json: User.alls
+		end
 	end
 
 	def show
