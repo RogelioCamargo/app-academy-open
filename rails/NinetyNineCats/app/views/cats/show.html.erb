@@ -1,3 +1,5 @@
+<a href="<%= cats_url %>">show all cats</a>
+
 <h1><%= @cat.name %></h1>
 
 <table>
@@ -12,3 +14,5 @@
     </tr>
   <% end %>
 </table>
+
+<a href="<%= edit_cat_url(@cat) %>">edit</a>
