@@ -8,6 +8,8 @@ class User < ApplicationRecord
 	attr_reader :password
 
 	has_many: :cats
+	has_many: :cat_rental_requests,
+		dependent: :destory
 
 	def self.find_by_credentials(user_name, password)
 		user = User.find_by(user_name: user_name)
