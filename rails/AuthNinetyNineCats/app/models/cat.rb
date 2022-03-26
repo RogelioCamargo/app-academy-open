@@ -10,6 +10,10 @@ class Cat < ApplicationRecord
   validates :sex, inclusion: %w(M F)
   validates :birth_date, :color, :name, :sex, presence: true
 
+	belongs_to :owner,
+		class_name: :User,
+		foriegn_key: :user_id
+
   # Remember, has_many is just a method where the first argument is
   # the name of the association, and the second argument is an options
   # hash.
