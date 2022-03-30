@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-	subject(:user) do { User.new(username: "naruto", password: "sakura") }
+	subject(:user) { User.new(username: "naruto", password: "sakura") }
 
   describe "validations" do 
 		it { should validate_presence_of(:email) }
@@ -44,9 +44,17 @@ RSpec.describe User, type: :model do
 		end 
 	end
 
-	# describe "class methods" do 
-	# 	describe "::find_by_credentials" do 
+	describe "class methods" do 
+		describe "::find_by_credentials" do 
+			before { user.save! }
 
-	# 	end 
-	# end 
+			it "returns user if provided valid credentials" do 
+				expect(User.find_by_credentials(username: "naruto", password: "sakura")).to eq(user)
+			end
+
+			it "returns nil if provided invalid credentials" do 
+				expect(User.find_by_credentials(username: "naruto", password: "rock_lee")).to be_nil 
+			end
+		end 
+	end 
 end
