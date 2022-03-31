@@ -30,8 +30,6 @@ RSpec.describe GoalsController, type: :controller do
   end
 
 	describe 'POST #create' do
-    let(:jack_bruce) { User.create!(username: 'jack_bruce', password: 'abcdef') }
-
     context 'when logged out' do
       before do
         allow(controller).to receive(:current_user) { nil }
@@ -45,7 +43,7 @@ RSpec.describe GoalsController, type: :controller do
 
     context 'when logged in' do
       before do
-        allow(controller).to receive(:current_user) { jack_bruce }
+        allow(controller).to receive(:current_user) { rock_lee }
       end
 
       context 'with invalid params' do

@@ -10,8 +10,13 @@ class GoalsController < ApplicationController
 		end
 	end
 
+	def index 
+		@goals = Goal.all
+		render :index
+	end
+
 	def new 
-		@goal = Goal.new 
+		@goal = current_user.goals
 		render :new 
 	end
 
