@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UserController, type: :controller do
+RSpec.describe UsersController, type: :controller do
 	subject(:user) do 
 		User.create!(username: "rock_lee", password: "naruto")
 	end 
@@ -21,18 +21,24 @@ RSpec.describe UserController, type: :controller do
 		end 
 
 		context "with valid parameters" do 
-			post :create, params: { user: { username: "rock_lee", password: "naruto"  } }
-			expect(response).to redirect_to(user_url(User.last))
+			it "redirects to user's show template on success" do 
+				post :create, params: { user: { username: "rock_lee", password: "naruto"  } }
+				expect(response).to redirect_to(user_url(User.last))
+			end
 		end 
 	end 
 
 	describe "GET #new" do
-		get :new, params: { id: user.id }
-		expect(response).to render_template(:new)
+		it "renders the new template" do 
+			get :new
+			expect(response).to render_template(:new)
+		end
 	end 
 
 	describe "GET #show" do 
-		get :show 
-		expect(response).to render_template(:show)
+		it "renders the show template" do 
+			get :show, params: { id: user.id } 
+			expect(response).to render_template(:show)
+		end
 	end
 end
