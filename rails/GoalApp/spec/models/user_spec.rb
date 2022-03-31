@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-	subject(:user) { User.new(username: "naruto", password: "sakura") }
+	subject(:user) do 
+		User.create!(username: "naruto", password: "sakura")
+	end
 
   describe "validations" do 
-		it { should validate_presence_of(:email) }
+		it { should validate_presence_of(:username) }
 		it { should validate_presence_of(:password_digest).with_message("Password can't be blank") }
 		it { should validate_length_of(:password).is_at_least(6).on(:create) }
+		it { should validate_uniqueness_of(:username) }
 	end 
 
 	it "creates a password digest when a password is given" do 
@@ -49,11 +52,11 @@ RSpec.describe User, type: :model do
 			before { user.save! }
 
 			it "returns user if provided valid credentials" do 
-				expect(User.find_by_credentials(username: "naruto", password: "sakura")).to eq(user)
+				expect(User.find_by_credentials("naruto", "sakura")).to eq(user)
 			end
 
 			it "returns nil if provided invalid credentials" do 
-				expect(User.find_by_credentials(username: "naruto", password: "rock_lee")).to be_nil 
+				expect(User.find_by_credentials("naruto", "rock_lee")).to be_nil 
 			end
 		end 
 	end 
