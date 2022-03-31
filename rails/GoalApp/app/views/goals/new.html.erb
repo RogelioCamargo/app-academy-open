@@ -1,0 +1,31 @@
+<h1>Create Goal</h1>
+
+<% if flash.now[:errors] %>
+	<ul>
+		<% flash.now[:errors].each do |error| %>
+			<li><%= error %></li>
+		<% end %>
+	</ul>
+<% end %>
+
+
+<form action="<%= goals_url %>" method="post">
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	<label for="goal_title">Title</label>
+	<input type="text" name="goal[title]" id="goal_title">
+	<br>
+	<label for="goal_details">Details</label>
+	<textarea name="goal[details]" id="goal_details"></textarea>
+	<br>
+	<input type="radio" name="goal[completed]" id="goal_completed" value="true">
+	<label for="goal_completed">Completed</label>
+	<input type="radio" name="goal[completed]" id="goal_not_completed" value="false">
+	<label for="goal_not_completed">Not Completed</label>
+	<br>
+	<input type="radio" name="goal[private]" id="goal_private" value="true">
+	<label for="goal_private">Private</label>
+	<input type="radio" name="goal[private]" id="goal_not_private" value="false">
+	<label for="goal_not_private">Public</label>
+	<br>
+	<input type="submit" value="Create">
+</form>
