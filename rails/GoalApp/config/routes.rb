@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   # root "articles#index"
 	resources :users, only: %i(create new show)
 	resource :session, only: %i(create destroy new)
+	resources :goals, only: %i(create new show)
 end
