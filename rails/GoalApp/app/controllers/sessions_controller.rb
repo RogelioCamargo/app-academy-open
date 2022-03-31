@@ -1,4 +1,7 @@
 class SessionsController < ApplicationController
+	before_action :require_current_user!, only: %i(destroy)
+	before_action :require_no_current_user!, only: %i(create new)
+	
 	def create 
 		@user = User.find_by_credentials(
 			params[:user][:username],
