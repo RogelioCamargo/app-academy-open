@@ -1,74 +1,58 @@
 class PolyTreeNode
-	attr_accessor :value
-  attr_reader :parent
-
 	def initialize(value)
-		@parent = nil
-		@children = []
 		@value = value
+		@parent = nil 
+		@children = []
 	end
 
-	def children
-    @children.dup
-  end
+	attr_reader :value, :parent, :children
 
 	def parent=(parent)
 		return if self.parent == parent
 
     # First, detach from current parent.
     if self.parent
-      self.parent._children.delete(self)
+      self.parent.children.delete(self)
     end
 
     # No new parent to add this to.
     @parent = parent
-    self.parent._children << self unless self.parent.nil?
+    self.parent.children << self unless self.parent.nil?
 
     self
 	end
 
 	def add_child(child)
-		# Just reset the child's parent to us!
-    child.parent = self
+		child.parent = self
 	end
 
 	def remove_child(child)
-    if child && !self.children.include?(child)
-      raise "Tried to remove node that isn't a child"
-    end
-
-    child.parent = nil
+		raise "Not a child" if !self.children.include?(child)
+		child.parent = nil
 	end
 
-	def dfs(target)
-		return self if target == self.value
+	def dfs(target_value)
+		return self if target_value == self.value
 
 		self.children.each do |child|
-			result = child.dfs(target)
+			result = child.dfs(target_value) 
 			return result unless result.nil?
 		end
 
-		nil
+		nil 
 	end
 
-	def bfs(target)
+	def bfs(target_value)
 		queue = [self]
-		until queue.empty?
+		while !queue.empty? 
 			node = queue.shift
-			return node if node.value == target
+			return node if target_value == node.value 
+
 			node.children.each do |child|
-				queue.push(child)
+				queue << child 
 			end
 		end
 
 		nil
 	end
-
-	protected 
-
-	# Protected method to give a node direct access to another node's
-  # children.
-	def _children
-    @children
-  end
 end

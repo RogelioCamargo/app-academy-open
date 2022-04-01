@@ -83,7 +83,7 @@ describe PolyTreeNode do
 
     it "should pass nil to the child's #parent=" do
       expect(node3).to receive(:parent=).with(nil)
-      node2.remove_child(node3)
+			node2.remove_child(node3)
     end
 
     it "should raise an error if node is not a child" do
