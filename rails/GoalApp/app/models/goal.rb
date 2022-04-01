@@ -1,4 +1,6 @@
 class Goal < ApplicationRecord
+	include Commentable
+	
 	validates :title, presence: true, length: { minimum: 6 }
 	validates :title, uniqueness: true
 	after_initialize :ensure_defaults
