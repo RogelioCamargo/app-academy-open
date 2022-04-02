@@ -1,5 +1,3 @@
-require_relative "00_tree_node"
-
 class PolyTreeNode
 	def initialize(value)
 		@value = value
