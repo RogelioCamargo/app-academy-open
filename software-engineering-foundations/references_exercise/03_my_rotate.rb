@@ -11,22 +11,26 @@
 
 
 def my_rotate!(array, amt)
-	if amt < 0
-		(amt * -1).times do
-			x = array.pop
-			array.unshift(x)
-		end
+	if amt < 0 
+		shift_right(array, -1 * amt)
+	else 
+		shift_left(array, amt)
+	end
+	
+	array
+end
 
-		array
-	elsif amt > 0
-		amt.times do
-			x = array.shift
-			array.push(x)
-		end
+def shift_left(array, amt) 
+	amt.times do 
+		el = array.shift
+		array.push(el)
+	end
+end
 
-		array
-	else
-		array
+def shift_right(array, amt) 
+	amt.times do 
+		el = array.pop
+		array.unshift(el)
 	end
 end
 
