@@ -1,8 +1,14 @@
 # Write a method, max_inject(arr), that accepts any amount of numbers arguments and returns
 # the largest number. Solve this using the built-in inject.
 
-def max_inject(*nums) 
-	nums.inject { |acc, el| acc > el ? acc : el }
+def max_inject(*array) 
+	array.inject do |max, current|
+		if current > max 
+			current 
+		else 
+			max 
+		end
+	end
 end
 
 p max_inject(1, -4, 0, 7, 5)  # => 7

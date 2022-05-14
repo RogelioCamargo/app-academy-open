@@ -3,15 +3,20 @@
 # The method should return false otherwise. For example coprime?(25, 12) is true because
 # 1 is the only number that divides both 25 and 12.
 
-def coprime?(num_1, num_2) 
-	min = [num_1, num_2].min
+def coprime?(a, b) 
+	# (2..a).each do |value|
+	# 	if (a % value == 0 && b % value == 0) 
+	# 		return false
+	# 	end
+	# end
 
-	(2..min).each do |num|
-		return false if num_1 % num == 0 && num_2 % num == 0
+	# true
+
+	(2..a).none? do |divisor|
+		a % divisor == 0 && b % divisor == 0
 	end
-
-	true
 end
+
 
 p coprime?(25, 12)    # => true
 p coprime?(7, 11)     # => true
