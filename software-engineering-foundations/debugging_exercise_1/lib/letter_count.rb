@@ -6,9 +6,10 @@
 require "byebug"
 
 def letter_count(string, char)
-    count = nil
+    count = 0
+		debugger
     string.each_char do |c| 
-        count += 1 if c = char 
+        count += 1 if c.downcase == char 
     end
     count
 end
