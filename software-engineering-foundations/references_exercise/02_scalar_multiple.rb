@@ -7,8 +7,8 @@
 # to be the same before and after calling your method.
 
 def scalar_multiple!(array, multiplier)
-	(0...array.length).each { |idx| array[idx] *= multiplier }
 
+	array.each_with_index { |value, index| array[index] = value * multiplier }
 	array
 end
 
