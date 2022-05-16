@@ -1,5 +1,5 @@
 class Board
-	attr_reader :size
+	attr_reader :size, :grid
 
 	def self.print_grid(grid)
 		grid.each do |row|
