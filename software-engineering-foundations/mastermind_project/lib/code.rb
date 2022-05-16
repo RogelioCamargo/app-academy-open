@@ -1,3 +1,4 @@
+require "byebug"
 class Code
   POSSIBLE_PEGS = {
     "R" => :red,
@@ -68,7 +69,7 @@ class Code
 				guess_dup[idx] = nil
 			end
 		end
-
+		# debugger
 		code_dup.delete(nil)
 		guess_dup.delete(nil)
 
