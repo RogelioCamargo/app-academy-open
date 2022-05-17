@@ -71,3 +71,78 @@ end
 # p longest_streak('aaaxyyyyyzz') # => 'yyyyy
 # p longest_streak('aaabbb')      # => 'bbb'
 # p longest_streak('abc')         # => 'c'
+
+def bi_prime?(number)
+	(2...number).each do |i|
+		(2...number).each do |j|
+			if i * j == number && is_prime?(i) && is_prime?(j)
+				return true 
+			end
+		end
+	end
+
+	false
+end
+
+def is_prime?(number)
+	(2...number).each do |factor|
+		return false if number % factor == 0
+	end
+
+	true
+end
+
+# p bi_prime?(14)   # => true
+# p bi_prime?(22)   # => true
+# p bi_prime?(25)   # => true
+# p bi_prime?(94)   # => true
+# p bi_prime?(24)   # => false
+# p bi_prime?(64)   # => false
+
+def vigenere_cipher(string, array)
+	alphabet = ("a".."z").to_a 
+	encoded = Array.new(string.length)
+
+	string.each_char.with_index do |char, index|
+		old_index = alphabet.index(char) 
+		shift_value = array[index % array.length]
+		encoded[index] = alphabet[(old_index + shift_value) % 26]
+	end
+
+	encoded.join("")
+end
+
+# p vigenere_cipher("toerrishuman", [1])        # => "upfssjtivnbo"
+# p vigenere_cipher("toerrishuman", [1, 2])     # => "uqftsktjvobp"
+# p vigenere_cipher("toerrishuman", [1, 2, 3])  # => "uqhstltjxncq"
+# p vigenere_cipher("zebra", [3, 0])            # => "ceerd"
+# p vigenere_cipher("yawn", [5, 1])             # => "dbbo"
+
+def vowel_rotate(string)
+	vowels = []
+	string.each_char do |char|
+		if "aeiou".include?(char)
+			vowels << char 
+		end
+	end
+	# p vowels
+
+	new_string = Array.new(string.length)
+	i = vowels.length - 1
+	string.each_char.with_index do |char, index|
+		if "aeiou".include?(char)
+			new_string[index] = vowels[i]
+			i = (i + 1) % vowels.length
+		else 
+			new_string[index] = char
+		end
+	end
+
+	new_string.join("")
+end
+
+p vowel_rotate('computer')      # => "cempotur"
+p vowel_rotate('oranges')       # => "erongas"
+p vowel_rotate('headphones')    # => "heedphanos"
+p vowel_rotate('bootcamp')      # => "baotcomp"
+p vowel_rotate('awesome')       # => "ewasemo"
