@@ -94,9 +94,10 @@ end
 
 def matrix_addition(matrix_a, matrix_b)
 	h = matrix_a.length 
+	w = matrix_a[0].length
 	sums = Array.new(h) { Array.new(2) }
 	(0...h).each do |i|
-		(0...2).each do |j|
+		(0...w).each do |j|
 			sums[i][j] = matrix_a[i][j] + matrix_b[i][j]
 		end
 	end
@@ -146,11 +147,163 @@ def tribonacci_number(n)
 	tribonacci_number(n - 3) + tribonacci_number(n - 2) + tribonacci_number(n - 1)
 end
 
-p tribonacci_number(1)  # 1
-p tribonacci_number(2)  # 1
-p tribonacci_number(3)  # 2
-p tribonacci_number(4)  # 4
-p tribonacci_number(5)  # 7
-p tribonacci_number(6)  # 13
-p tribonacci_number(7)  # 24
-p tribonacci_number(11) # 274
+# p tribonacci_number(1)  # 1
+# p tribonacci_number(2)  # 1
+# p tribonacci_number(3)  # 2
+# p tribonacci_number(4)  # 4
+# p tribonacci_number(5)  # 7
+# p tribonacci_number(6)  # 13
+# p tribonacci_number(7)  # 24
+# p tribonacci_number(11) # 274
+
+def matrix_addition_reloaded(*matrices)
+	h = matrices.first.length  
+	return nil if !matrices.all? { |m| m.length == h }
+	w = matrices.first.first.length 
+	return nil if !matrices.all? { |m| m.length == h }
+
+	sums = Array.new(h) { Array.new(w).fill(0) }
+	(0...matrices.length).each do |i|
+		(0...h).each do |row|
+			(0...w).each do |col|
+				sums[row][col] += matrices[i][row][col]
+			end
+		end
+	end
+	sums
+end
+
+# matrix_a = [[2,5], [4,7]]
+# matrix_b = [[9,1], [3,0]]
+# matrix_c = [[-1,0], [0,-1]]
+# matrix_d = [[2, -5], [7, 10], [0, 1]]
+# matrix_e = [[0 , 0], [12, 4], [6,  3]]
+
+# p matrix_addition_reloaded(matrix_a, matrix_b)              # [[11, 6], [7, 7]]
+# p matrix_addition_reloaded(matrix_a, matrix_b, matrix_c)    # [[10, 6], [7, 6]]
+# p matrix_addition_reloaded(matrix_e)                        # [[0, 0], [12, 4], [6, 3]]
+# p matrix_addition_reloaded(matrix_d, matrix_e)              # [[2, -5], [19, 14], [6, 4]]
+# p matrix_addition_reloaded(matrix_a, matrix_b, matrix_e)    # nil
+# p matrix_addition_reloaded(matrix_d, matrix_e, matrix_c)    # nil
+
+def squarocol?(matrix)
+	n = matrix.length 
+
+	(0...n).each do |row|
+		val = matrix[row][0]
+		return true if (1...n).all? { |col| matrix[row][col] == val }
+	end
+
+	(0...n).each do |col|
+		val = matrix[0][col]
+		return true if (1...n).all? { |row| matrix[row][col] == val }
+	end
+
+	false
+
+end
+
+# p squarocol?([
+#     [:a, :x , :d],
+#     [:b, :x , :e],
+#     [:c, :x , :f],
+# ]) # true
+
+# p squarocol?([
+#     [:x, :y, :x],
+#     [:x, :z, :x],
+#     [:o, :o, :o],
+# ]) # true
+
+# p squarocol?([
+#     [:o, :x , :o],
+#     [:x, :o , :x],
+#     [:o, :x , :o],
+# ]) # false
+
+# p squarocol?([
+#     [1, 2, 2, 7],
+#     [1, 6, 6, 7],
+#     [0, 5, 2, 7],
+#     [4, 2, 9, 7],
+# ]) # true
+
+# p squarocol?([
+#     [1, 2, 2, 7],
+#     [1, 6, 6, 0],
+#     [0, 5, 2, 7],
+#     [4, 2, 9, 7],
+# ]) # false
+
+def check_diagonal(matrix)
+	n = matrix.length 
+
+	val = matrix[0][0]
+	(1...n).all? { |i| matrix[i][i] == val }
+end
+
+def squaragonal?(matrix)
+	check_diagonal(matrix) || check_diagonal(matrix.map(&:reverse))
+end
+
+# p squaragonal?([
+#     [:x, :y, :o],
+#     [:x, :x, :x],
+#     [:o, :o, :x],
+# ]) # true
+
+# p squaragonal?([
+#     [:x, :y, :o],
+#     [:x, :o, :x],
+#     [:o, :o, :x],
+# ]) # true
+
+# p squaragonal?([
+#     [1, 2, 2, 7],
+#     [1, 1, 6, 7],
+#     [0, 5, 1, 7],
+#     [4, 2, 9, 1],
+# ]) # true
+
+# p squaragonal?([
+#     [1, 2, 2, 5],
+#     [1, 6, 5, 0],
+#     [0, 2, 2, 7],
+#     [5, 2, 9, 7],
+# ]) # false
+
+def pascals_triangle(levels)
+	triangle = [[1]]
+	(levels - 1).times do 
+		last = triangle.last 
+		new_level = [1]
+		(0...last.length - 1).each do |i|
+			new_level << last[i] + last[i + 1]
+		end
+		new_level << 1
+
+		triangle << new_level
+	end
+
+	triangle
+end
+
+p pascals_triangle(5)
+# [
+#     [1],
+#     [1, 1],
+#     [1, 2, 1],
+#     [1, 3, 3, 1],
+#     [1, 4, 6, 4, 1]
+# ]
+
+p pascals_triangle(7)
+# [
+#     [1],
+#     [1, 1],
+#     [1, 2, 1],
+#     [1, 3, 3, 1],
+#     [1, 4, 6, 4, 1],
+#     [1, 5, 10, 10, 5, 1],
+#     [1, 6, 15, 20, 15, 6, 1]
+# ]
