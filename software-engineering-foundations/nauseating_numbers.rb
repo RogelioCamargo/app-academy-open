@@ -288,22 +288,110 @@ def pascals_triangle(levels)
 	triangle
 end
 
-p pascals_triangle(5)
-# [
-#     [1],
-#     [1, 1],
-#     [1, 2, 1],
-#     [1, 3, 3, 1],
-#     [1, 4, 6, 4, 1]
-# ]
+# p pascals_triangle(5)
+# # [
+# #     [1],
+# #     [1, 1],
+# #     [1, 2, 1],
+# #     [1, 3, 3, 1],
+# #     [1, 4, 6, 4, 1]
+# # ]
 
-p pascals_triangle(7)
-# [
-#     [1],
-#     [1, 1],
-#     [1, 2, 1],
-#     [1, 3, 3, 1],
-#     [1, 4, 6, 4, 1],
-#     [1, 5, 10, 10, 5, 1],
-#     [1, 6, 15, 20, 15, 6, 1]
-# ]
+# p pascals_triangle(7)
+# # [
+# #     [1],
+# #     [1, 1],
+# #     [1, 2, 1],
+# #     [1, 3, 3, 1],
+# #     [1, 4, 6, 4, 1],
+# #     [1, 5, 10, 10, 5, 1],
+# #     [1, 6, 15, 20, 15, 6, 1]
+# # ]
+
+def prime?(num)
+	(2...num).each do |factor|
+		return false if num % factor == 0
+	end
+
+	true 
+end
+
+def mersenne_prime(num)
+	i = 0
+	x = 2 
+	while i != num 
+		one_less = (2 ** x) - 1
+		if prime?(one_less)
+			i += 1
+		end
+		x += 1
+	end
+
+	one_less
+end
+
+# p mersenne_prime(1) # 3
+# p mersenne_prime(2) # 7
+# p mersenne_prime(3) # 31
+# p mersenne_prime(4) # 127
+# p mersenne_prime(6) # 131071
+
+def word_sum(word)
+	alphabet = ("a".."z").to_a
+	sum = 0
+	word.each_char do |char|
+		sum += (alphabet.index(char)) + 1
+	end
+	sum
+end
+
+def triangular_word?(word)
+	value = word_sum(word)
+	(1..value).each do |i|
+		result = (i * (i + 1)) / 2
+		return true if value == result 
+	end
+
+	false
+end
+
+# p triangular_word?('abc')       # true
+# p triangular_word?('ba')        # true
+# p triangular_word?('lovely')    # true
+# p triangular_word?('question')  # true
+# p triangular_word?('aa')        # false
+# p triangular_word?('cd')        # false
+# p triangular_word?('cat')       # false
+# p triangular_word?('sink')      # false
+
+def consecutive_collapse(array)
+	collapsed = false 
+	copy = array[0..-1]
+
+	while !collapsed
+		collapsed = true 
+		i = 0
+		while i < copy.length - 1
+			# p array.length - 1
+			# p [array[i + 1], array[i]]
+			difference = (copy[i + 1] - copy[i]).abs
+			if difference == 1
+				copy = copy[0...i] + copy[i + 2..-1]
+				collapsed = false 
+				break
+			end
+			i += 1
+		end
+	end
+
+	copy
+end
+
+# p consecutive_collapse([3, 4, 1])                     # [1]
+# p consecutive_collapse([1, 4, 3, 7])                  # [1, 7]
+# p consecutive_collapse([9, 8, 2])                     # [2]
+# p consecutive_collapse([9, 8, 4, 5, 6])               # [6]
+# p consecutive_collapse([1, 9, 8, 6, 4, 5, 7, 9, 2])   # [1, 9, 2]
+# p consecutive_collapse([3, 5, 6, 2, 1])               # [1]
+# p consecutive_collapse([5, 7, 9, 9])                  # [5, 7, 9, 9]
+# p consecutive_collapse([13, 11, 12, 12])              # []
