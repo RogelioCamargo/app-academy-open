@@ -119,7 +119,171 @@ def uncompress(encoded)
 	decoded
 end
 
-p uncompress('a2b4c1') # 'aabbbbc'
-p uncompress('b1o2t1') # 'boot'
-p uncompress('x3y1x2z4') # 'xxxyxxzzzz'
+# p uncompress('a2b4c1') # 'aabbbbc'
+# p uncompress('b1o2t1') # 'boot'
+# p uncompress('x3y1x2z4') # 'xxxyxxzzzz'
 
+def conjunct_select(array, *procs)
+	array.select do |el|
+
+		procs.all? { |proc| proc.call(el) }
+	end
+end
+
+# is_positive = Proc.new { |n| n > 0 }
+# is_odd = Proc.new { |n| n.odd? }
+# less_than_ten = Proc.new { |n| n < 10 }
+
+# p conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive) # [4, 8, 11, 7, 13]
+# p conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive, is_odd) # [11, 7, 13]
+# p conjunct_select([4, 8, -2, 11, 7, -3, 13], is_positive, is_odd, less_than_ten) # [7]
+
+def convert_pig_latin(string)
+	words = string.split(" ")
+
+	altered = words.map do |word|
+		if word.length < 3
+			word 
+		else 
+			if "aeiou".include?(word[0].downcase)
+				word + "yay"
+			else 
+				idx = word.index(/[aeiouAEIOU]/)
+				new_word = word[idx...word.length].downcase + word[0..idx].downcase + "ay"
+				new_word[0] = new_word[0].upcase if word[0] == word[0].upcase
+				new_word
+			end
+		end
+	end 
+
+	altered.join(" ")
+end
+
+# p convert_pig_latin('We like to eat bananas') # "We ikelay to eatyay ananasbay"
+# p convert_pig_latin('I cannot find the trash') # "I annotcay indfay ethay ashtray"
+# p convert_pig_latin('What an interesting problem') # "Atwhay an interestingyay oblempray"
+# p convert_pig_latin('Her family flew to France') # "Erhay amilyfay ewflay to Ancefray"
+# p convert_pig_latin('Our family flew to France') # "Ouryay amilyfay ewflay to Ancefray"
+
+def reverberate(string)
+	words = string.split(" ")
+	vowels = "aeiouAEIOU"
+	altered = words.map do |word|
+		if word.length < 3 
+			word 
+		elsif vowels.include?(word[-1])
+			word + word.downcase
+		else  
+			idx = word.rindex(/[aeiouAEIOU]/)
+			word + word[idx..-1]
+		end
+	end
+
+	altered.join(" ")
+end
+
+# p reverberate('We like to go running fast') # "We likelike to go runninging fastast"
+# p reverberate('He cannot find the trash') # "He cannotot findind thethe trashash"
+# p reverberate('Pasta is my favorite dish') # "Pastapasta is my favoritefavorite dishish"
+# p reverberate('Her family flew to France') # "Herer familyily flewew to Francefrance"
+
+def disjunct_select(array, *procs)
+	array.select { |el| procs.any? { |proc| proc.call(el) } }
+end
+
+# longer_four = Proc.new { |s| s.length > 4 }
+# contains_o = Proc.new { |s| s.include?('o') }
+# starts_a = Proc.new { |s| s[0] == 'a' }
+
+# p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
+#     longer_four,
+# ) # ["apple", "teeming"]
+
+# p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
+#     longer_four,
+#     contains_o
+# ) # ["dog", "apple", "teeming", "boot"]
+
+# p disjunct_select(['ace', 'dog', 'apple', 'teeming', 'boot', 'zip'],
+#     longer_four,
+#     contains_o,
+#     starts_a
+# ) # ["ace", "dog", "apple", "teeming", "boot"]
+
+def alternating_vowel(string)
+	words = string.split(" ")
+	altered = words.map.with_index do |word, idx|
+		if idx.even?
+			index = word.index(/[aeiou]/)
+			if !index 
+				word 
+			else 
+				word[0...index] + word[index + 1..-1]
+			end
+		else
+			index = word.rindex(/[aeiou]/)
+			if !index 
+				word 
+			else 
+				word[0...index] + word[index + 1..-1]
+			end
+		end
+	end
+	altered.join(" ")
+end
+
+# p alternating_vowel('panthers are great animals') # "pnthers ar grat animls"
+# p alternating_vowel('running panthers are epic') # "rnning panthrs re epc"
+# p alternating_vowel('code properly please') # "cde proprly plase"
+# p alternating_vowel('my forecast predicts rain today') # "my forecst prdicts ran tday"
+
+def silly_talk(string)
+	words = string.split(" ")
+	vowels = "aeiouAEIOU"
+	altered = words.map do |word|
+		if vowels.include?(word[-1])
+			word + word[-1]
+		else 
+			new_string = ""
+			word.each_char do |ch|
+				if vowels.include?(ch)
+					new_string += ch + "b" + ch.downcase
+				else
+					new_string += ch
+				end
+			end
+			new_string 
+		end
+	end
+	altered.join(" ")
+end
+
+# p silly_talk('Kids like cats and dogs') # "Kibids likee cabats aband dobogs"
+# p silly_talk('Stop that scooter') # "Stobop thabat scobooboteber"
+# p silly_talk('They can code') # "Thebey caban codee"
+# p silly_talk('He flew to Italy') # "Hee flebew too Ibitabaly"
+
+def compress(string)
+	i = 0 
+	encoded = ""
+	while i < string.length do 
+		j = i
+		count = 0 
+		while string[i] == string[j] do 
+			count += 1
+			j += 1
+		end
+
+		if count > 1
+			encoded += string[i] + "#{count}"
+		else 
+			encoded += string[i]
+		end
+		i = j
+	end
+	encoded
+end
+
+# p compress('aabbbbc')   # "a2b4c"
+# p compress('boot')      # "bo2t"
+# p compress('xxxyxxzzzz')# "x3yx2z4"
