@@ -6,6 +6,10 @@ class Board
 		@grid = Array.new(@size) { Array.new(@size).fill('_') }
 	end
 
+	def reset
+		@grid = Array.new(@size) { Array.new(@size).fill('_') }
+	end
+
 	def valid?(position)
 		x, y = position
 		x < size && x >= 0 && y < size && y >= 0
@@ -58,7 +62,7 @@ class Board
 
 	def empty_positions?
 		(0...size).each do |row|
-			return true if (0...size).any? { |col| grid[row][col] == '_' }
+			return true if (0...size).any? { |col| @grid[row][col] == '_' }
 		end
 		false
 	end
