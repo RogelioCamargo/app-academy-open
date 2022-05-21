@@ -29,8 +29,9 @@ class Board
 	end
 
 	def print 
-		@grid.each do |row|
-			p row.join(" ")
+		p "  #{(0...size).to_a.join(" ")}"
+		@grid.each_with_index do |row, idx|
+			p "#{idx} #{row.join(" ")}"
 		end
 	end
 
