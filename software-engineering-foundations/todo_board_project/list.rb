@@ -22,6 +22,8 @@ class List
 	end
 
 	def swap(index_1, index_2)
+		index_1 = index_1.to_i
+		index_2 = index_2.to_i
 		return false if !valid_index?(index_1) || !valid_index?(index_2)
 
 		@items[index_1], @items[index_2] = @items[index_2], @items[index_1]
@@ -45,11 +47,13 @@ class List
 		end
 	end
 
-	def up(index, amount = 1)
+	def up(index, amount)
+		index = index.to_i
+		amount ||= 1
 		return false if !valid_index?(index)
 
 		current_index = index 
-		swaps_remaining = amount 
+		swaps_remaining = amount.to_i
 		while current_index > 0 && swaps_remaining > 0 do 
 			next_index= current_index - 1
 			swap(current_index, next_index)
@@ -60,11 +64,13 @@ class List
 		true
 	end
 
-	def down(index, amount = 1)
+	def down(index, amount)
+		index = index.to_i
+		amount ||= 1
 		return false if !valid_index?(index)
 
 		current_index = index 
-		swaps_remaining = amount 
+		swaps_remaining = amount.to_i
 		while current_index < self.size - 1 && swaps_remaining > 0 do 
 			next_index= current_index + 1
 			swap(current_index, next_index)
@@ -90,6 +96,7 @@ class List
 	end
 
 	def print_full_item(index)
+		index = index.to_i
 		return if !valid_index?(index)
 
 		item = self[index]
