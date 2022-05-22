@@ -19,4 +19,8 @@ class Player
 		print "Enter a letter: "
 	end
 
+	def to_s
+		name
+	end
+
 end

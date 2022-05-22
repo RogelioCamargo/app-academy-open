@@ -2,7 +2,7 @@ require "set"
 require_relative "player"
 class GhostGame 
 	ALPHABET = Set.new("a".."z")
-	MAX_LOSS_COUNT = 5
+	MAX_LOSS_COUNT = 2
 
 	def initialize(*players)
 		words = File.readlines("dictionary.txt").map(&:chomp)
@@ -14,15 +14,11 @@ class GhostGame
 	end
 
 	def run 
-		until game_over? do 
-			play_round
-			display_standings
-		end
+		play_round until game_over? 
+		puts "#{winner} wins!"
 	end
 
 	private 
-
-	
 
 	def play_round
 		@fragment = ""
@@ -32,8 +28,13 @@ class GhostGame
 			next_player!
 		end
 
-		puts "#{previous_player.name} loses this round!"
-		@losses[previous_player] += 1
+		puts "#{previous_player} loses this round!"
+		update_standings
+	end
+
+	def winner 
+		(player, _) = @losses.find { |_, loss_count| loss_count < MAX_LOSS_COUNT }
+		player 
 	end
 
 	def game_over? 
@@ -45,7 +46,7 @@ class GhostGame
 	end
 
 	def current_player
-		@players[0]
+		@players.each { |player| return player if @losses[player] < MAX_LOSS_COUNT }
 	end
 
 	def previous_player 
@@ -60,7 +61,7 @@ class GhostGame
 	end
 
 	def take_turn
-		puts "It's #{current_player.name}'s turn!"
+		puts "It's #{current_player}'s turn!"
 		letter = nil
 		until letter do 
 			letter = current_player.guess(@fragment)
@@ -70,7 +71,7 @@ class GhostGame
 			end
 		end
 		@fragment += letter
-		puts "#{current_player.name} added the letter '#{letter}' to the fragment."
+		puts "#{current_player} added the letter '#{letter}' to the fragment."
 	end
 
 	def valid_play?(letter)
@@ -86,7 +87,7 @@ class GhostGame
 	def display_standings 
 		puts "SCOREBOARD"
 		@losses.keys.each do |player|
-			puts "#{player.name}: #{record(player)}"
+			puts "#{player}: #{record(player)}"
 		end
 	end
 
@@ -94,6 +95,20 @@ class GhostGame
 		losses_count = @losses[player]
 		"GHOST"[0...losses_count]
 	end
+
+	def update_standings
+    puts "\n\n"
+    puts "#{previous_player} spelled #{@fragment}."
+    puts "#{previous_player} gets a letter!"
+
+    if @losses[previous_player] == MAX_LOSS_COUNT - 1
+      puts "#{previous_player} has been eliminated!"
+    end
+    
+    @losses[previous_player] += 1
+    
+    display_standings
+  end
 end
 
 if $PROGRAM_NAME == __FILE__
