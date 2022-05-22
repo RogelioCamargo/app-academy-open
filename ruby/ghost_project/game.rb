@@ -2,18 +2,19 @@ require "set"
 require_relative "player"
 class GhostGame 
 	ALPHABET = Set.new("a".."z")
-	MAX_LOSS_COUNT = 5 
+	MAX_LOSS_COUNT = 5
 
 	def initialize(*players)
 		words = File.readlines("dictionary.txt").map(&:chomp)
 		@dictionary = Set.new(words)
 		@players = players 
-		@losses = Hash.new { |losses, player| losses[player] = 0 }
-		players
+		losses = Hash.new
+		players.each { |player| losses[player] = 0 }
+		@losses = losses
 	end
 
 	def run 
-		until @losses.values.any? { |v| v >= 5 } do 
+		until game_over? do 
 			play_round
 			display_standings
 		end
@@ -21,12 +22,37 @@ class GhostGame
 
 	private 
 
+	
+
+	def play_round
+		@fragment = ""
+
+		until round_over?
+			take_turn
+			next_player!
+		end
+
+		puts "#{previous_player.name} loses this round!"
+		@losses[previous_player] += 1
+	end
+
+	def game_over? 
+		@losses.one? { |_, loss_count| loss_count < MAX_LOSS_COUNT }
+	end
+
+	def round_over? 
+		is_word?(@fragment)
+	end
+
 	def current_player
 		@players[0]
 	end
 
 	def previous_player 
-		@players[-1]
+		(@players.length - 1).downto(0).each do |i|
+			player = @players[i]
+			return player if @losses[player] < MAX_LOSS_COUNT
+		end
 	end
 
 	def next_player!
@@ -34,7 +60,6 @@ class GhostGame
 	end
 
 	def take_turn
-		# puts "\n\n"
 		puts "It's #{current_player.name}'s turn!"
 		letter = nil
 		until letter do 
@@ -58,18 +83,6 @@ class GhostGame
 		@dictionary.include?(string)
 	end
 
-	def play_round
-		@fragment = ""
-
-		until is_word?(@fragment)
-			take_turn
-			next_player!
-		end
-
-		puts "#{previous_player.name} losses this round!"
-		@losses[previous_player] += 1
-	end
-
 	def display_standings 
 		puts "SCOREBOARD"
 		@losses.keys.each do |player|
@@ -87,6 +100,7 @@ if $PROGRAM_NAME == __FILE__
   game = GhostGame.new(
     Player.new("Roger"), 
     Player.new("Emma"), 
+		Player.new("Judy")
     )
 
   game.run
