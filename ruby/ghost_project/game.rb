@@ -22,14 +22,14 @@ class GhostGame
 		@players.rotate!
 	end
 
-	def take_turn(player)
+	def take_turn
 		system("clear")
 		puts "It's #{current_player.name}'s turn!"
 		letter = nil
 		until letter do 
-			letter = player.guess(@fragment)
+			letter = current_player.guess(@fragment)
 			unless valid_play?(letter)
-				player.alert_invalid_guess
+				current_player.alert_invalid_guess
 				letter = nil
 			end
 		end
@@ -49,7 +49,7 @@ class GhostGame
 
 	def play_round
 		until is_word?(@fragment)
-			take_turn(current_player)
+			take_turn
 			next_player!
 		end
 
