@@ -2,13 +2,24 @@ require "set"
 require_relative "player"
 class GhostGame 
 	ALPHABET = Set.new("a".."z")
+	MAX_LOSS_COUNT = 5 
 
 	def initialize(*players)
 		words = File.readlines("dictionary.txt").map(&:chomp)
 		@dictionary = Set.new(words)
 		@players = players 
-		@fragment = ""
+		@losses = Hash.new { |losses, player| losses[player] = 0 }
+		players
 	end
+
+	def run 
+		until @losses.values.any? { |v| v >= 5 } do 
+			play_round
+			display_standings
+		end
+	end
+
+	private 
 
 	def current_player
 		@players[0]
@@ -23,7 +34,7 @@ class GhostGame
 	end
 
 	def take_turn
-		system("clear")
+		# puts "\n\n"
 		puts "It's #{current_player.name}'s turn!"
 		letter = nil
 		until letter do 
@@ -48,12 +59,27 @@ class GhostGame
 	end
 
 	def play_round
+		@fragment = ""
+
 		until is_word?(@fragment)
 			take_turn
 			next_player!
 		end
 
-		puts "#{current_player.name} wins!"
+		puts "#{previous_player.name} losses this round!"
+		@losses[previous_player] += 1
+	end
+
+	def display_standings 
+		puts "SCOREBOARD"
+		@losses.keys.each do |player|
+			puts "#{player.name}: #{record(player)}"
+		end
+	end
+
+	def record(player)
+		losses_count = @losses[player]
+		"GHOST"[0...losses_count]
 	end
 end
 
@@ -63,5 +89,5 @@ if $PROGRAM_NAME == __FILE__
     Player.new("Emma"), 
     )
 
-  game.play_round
+  game.run
 end
