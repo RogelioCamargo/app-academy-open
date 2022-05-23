@@ -6,8 +6,12 @@ class Board
 		populate
 	end
 
+	def number_of_rows 
+		grid.length
+	end
+
 	def render 
-		puts "  #{(0...grid.length).to_a.join(" ")}"
+		puts "  #{(0...number_of_rows).to_a.join(" ")}"
 		grid.each_with_index do |row, index|
 			puts "#{index} #{row.join(" ")}"
 		end
@@ -18,23 +22,10 @@ class Board
 		grid[row][col].reveal
 	end
 
-	private 
-	attr_reader :grid
-
-	def populate
-		pairs = Card.get_shuffled_pairs((grid.length ** 2) / 2)
-		(0...grid.length).each do |row|
-			(0...grid.length).each do |col|	
-				self[[row, col]] = pairs.pop
-			end
-		end
-	end
-
 	def won? 
-		gird.all? do |row|
+		grid.all? do |row|
 			row.all? { |card| card.revealed? }
-		end
-		true 
+		end 
 	end
 
 	def [](position)
@@ -45,5 +36,17 @@ class Board
 	def []=(position, value)
 		row, col = position
 		grid[row][col] = value
+	end
+
+	private 
+	attr_reader :grid
+
+	def populate
+		pairs = Card.get_shuffled_pairs((number_of_rows ** 2) / 2)
+		(0...number_of_rows).each do |row|
+			(0...number_of_rows).each do |col|	
+				self[[row, col]] = pairs.pop
+			end
+		end
 	end
 end
