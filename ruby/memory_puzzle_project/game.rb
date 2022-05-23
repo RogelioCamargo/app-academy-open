@@ -1,33 +1,29 @@
 require_relative "board"
-
+require_relative "human_player.rb"
 class MemoryPuzzleGame 
-	def initialize
+	def initialize(player)
 		@board = Board.new 
 		@previous_guess = nil 
+		@player = player 
 	end
 
 	def play 
 		until game_over?
 			render 
-			guess_position = prompt 
+			player.prompt
+			guess_position = get_player_input
 			make_guess(guess_position)
 		end
 	end
 
 	private 
-	attr_reader :board
+	attr_reader :board, :player
 	attr_accessor :previous_guess
 
-	def prompt 
-		print "Enter a positon: "
-		valid_position = nil 
-		valid_position = get_position until valid_guess?(valid_position)
-		valid_position
-	end
-
-	def get_position 
-		x, y = gets.chomp.split(" ")
-		[x.to_i, y.to_i]
+	def get_player_input 
+		position = nil 
+		position = player.get_input until valid_guess?(position)
+		position
 	end
 
 	def make_guess(guess_position)
@@ -39,6 +35,7 @@ class MemoryPuzzleGame
 	def compare_guess(current_guess)
 		if !previous_guess 
 			self.previous_guess = current_guess 
+			player.previous_guess = current_guess
 			current_guess.reveal 
 		else  
 			if previous_guess == current_guess
@@ -56,6 +53,7 @@ class MemoryPuzzleGame
 				current_guess.hide 
 			end
 			self.previous_guess = nil 
+			player.previous_guess = nil
 		end
 	end
 
@@ -77,6 +75,6 @@ end
 
 
 if $PROGRAM_NAME == __FILE__
-  game = MemoryPuzzleGame.new
+  game = MemoryPuzzleGame.new(HumanPlayer.new)
   game.play
 end
