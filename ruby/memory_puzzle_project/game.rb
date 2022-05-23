@@ -1,5 +1,7 @@
 require_relative "board"
-require_relative "human_player.rb"
+require_relative "human_player"
+require_relative "computer_player"
+
 class MemoryPuzzleGame 
 	def initialize(player)
 		@board = Board.new 
@@ -10,7 +12,6 @@ class MemoryPuzzleGame
 	def play 
 		until game_over?
 			render 
-			player.prompt
 			guess_position = get_player_input
 			make_guess(guess_position)
 		end
@@ -28,33 +29,34 @@ class MemoryPuzzleGame
 
 	def make_guess(guess_position)
 		raise "Invalid guess" unless valid_guess?(guess_position)
-		current_guess = board[guess_position]
-		compare_guess(current_guess)
+		current_card = board[guess_position]
+		current_card.reveal 
+		player.receive_revealed_card(guess_position, current_card)
+		compare_guess(guess_position)
 	end
 
 	def compare_guess(current_guess)
 		if !previous_guess 
 			self.previous_guess = current_guess 
 			player.previous_guess = current_guess
-			current_guess.reveal 
 		else  
-			if previous_guess == current_guess
-				current_guess.reveal
+			if match?(previous_guess, current_guess)
 				render
-				puts "It's a match!"
-				sleep(2)
+				player.receive_match(previous_guess, current_guess)
+				sleep(1)
 			else
-				current_guess.reveal
-				puts current_guess.value
 				render
 				puts "Not a match!"
-				sleep(2)
-				previous_guess.hide 
-				current_guess.hide 
+				sleep(1)
+				[previous_guess, current_guess].each { |position| board[position].hide }
 			end
 			self.previous_guess = nil 
 			player.previous_guess = nil
 		end
+	end
+
+	def match?(position_1, position_2)
+		board[position_1] == board[position_2]
 	end
 
 	def valid_guess?(guess_position)
@@ -75,6 +77,13 @@ end
 
 
 if $PROGRAM_NAME == __FILE__
-  game = MemoryPuzzleGame.new(HumanPlayer.new)
-  game.play
+	type_of_player = ARGV.shift
+	case type_of_player
+	when "C"
+		MemoryPuzzleGame.new(ComputerPlayer.new).play 
+	when "H"
+		MemoryPuzzleGame.new(HumanPlayer.new).play
+	else 
+		raise "Invalid type of player!"
+	end
 end
