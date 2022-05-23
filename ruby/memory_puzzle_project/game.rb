@@ -3,10 +3,10 @@ require_relative "board"
 class MemoryPuzzleGame 
 	def initialize
 		@board = Board.new 
+		@previous_guess = nil 
 	end
 
 	def play 
-		@previous_guess = nil 
 		until game_over?
 			render 
 			guess_position = prompt 
@@ -15,10 +15,17 @@ class MemoryPuzzleGame
 	end
 
 	private 
-	attr_reader :board, :previous_guess
+	attr_reader :board
+	attr_accessor :previous_guess
 
 	def prompt 
 		print "Enter a positon: "
+		valid_position = nil 
+		valid_position = get_position until valid_guess?(valid_position)
+		valid_position
+	end
+
+	def get_position 
 		x, y = gets.chomp.split(" ")
 		[x.to_i, y.to_i]
 	end
@@ -26,9 +33,12 @@ class MemoryPuzzleGame
 	def make_guess(guess_position)
 		raise "Invalid guess" unless valid_guess?(guess_position)
 		current_guess = board[guess_position]
+		compare_guess(current_guess)
+	end
 
+	def compare_guess(current_guess)
 		if !previous_guess 
-			@previous_guess = current_guess 
+			self.previous_guess = current_guess 
 			current_guess.reveal 
 		else  
 			if previous_guess == current_guess
@@ -45,11 +55,12 @@ class MemoryPuzzleGame
 				previous_guess.hide 
 				current_guess.hide 
 			end
-			@previous_guess = nil 
+			self.previous_guess = nil 
 		end
 	end
 
 	def valid_guess?(guess_position)
+		return false if !guess_position
 		row, col = guess_position
 		row < board.number_of_rows && row >= 0 && col < board.number_of_rows && col >= 0
 	end
