@@ -54,6 +54,9 @@ class Board
 	end	
 
 	def squares_solved?
+		# 0 | 3 | 6 
+		# 1 | 4 | 7
+		# 2 | 5 | 8
 		(0...grid.length).all? do |quadrant_index| 
 			quadrant_values = [] 
 			x = 3 * (quadrant_index / 3)

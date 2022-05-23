@@ -9,4 +9,8 @@ class Tile
 	def to_s 
 		value == 0 ? "*" : value.to_s
 	end
+	
+	def given?
+		@given
+	end
 end
