@@ -18,8 +18,6 @@ class Board
 		@grid = Board.from_file("puzzles/#{filename}")
 	end
 
-	attr_reader :grid
-
 	def render 
 		puts "  #{(0...grid.length).to_a.join(" ")}"
 		grid.each_with_index do |row, index|
@@ -30,6 +28,15 @@ class Board
 	def solved?
 		rows_solved? && columns_solved? && squares_solved?
 	end
+
+	def []=(position, new_value)
+		x, y = position
+		tile = @grid[x][y]
+		tile.value = new_value
+	end
+
+	private 
+	attr_reader :grid
 
 	def rows_solved?
 		grid.all? do |row|

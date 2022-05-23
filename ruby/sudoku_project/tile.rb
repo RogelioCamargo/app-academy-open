@@ -7,6 +7,6 @@ class Tile
 	end
 
 	def to_s 
-		@given ? value.to_s : "*"
+		value == 0 ? "*" : value.to_s
 	end
 end
