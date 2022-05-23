@@ -18,6 +18,10 @@ class Board
 		@grid = Board.from_file("puzzles/#{filename}")
 	end
 
+	def size 
+		grid.size 
+	end
+
 	def render 
 		puts "  #{(0...grid.length).to_a.join(" ")}"
 		grid.each_with_index do |row, index|

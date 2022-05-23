@@ -1,5 +1,5 @@
 class Tile 
-	attr_accessor :value 
+	attr_reader :value 
 
 	def initialize(value, given = false)
 		@value = value 
@@ -12,5 +12,14 @@ class Tile
 	
 	def given?
 		@given
+	end 
+
+	def value=(new_value)
+		if given?
+			puts "Can't alter given values."
+			sleep(1)
+		else
+			@value = new_value
+		end
 	end
 end

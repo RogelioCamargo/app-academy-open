@@ -17,22 +17,32 @@ class SudokuGame
 		puts "You finished! Congrats!"
 	end
 
+	private 
+	attr_reader :board
+
 	def prompt
-		print "Enter a position: "
 		position = get_position
-		print "Enter a value: "
 		value = get_value
 
 		board[position] = value
 	end
 
 	def get_position 
-		x, y = gets.chomp.split(" ")
-		[x.to_i, y.to_i]
+		position = nil
+		until valid_position?(position) do
+			print "Enter a position: "
+			position = gets.chomp.split(" ").map { |x| x.to_i } 
+		end
+		position	
 	end
 
 	def get_value 
-		value = gets.chomp.to_i
+		value = nil
+		until valid_value?(value) do 
+			print "Enter a value: "
+			value = gets.chomp.to_i 
+		end
+		value
 	end
 
 	def solved?
@@ -43,8 +53,15 @@ class SudokuGame
 		board.render
 	end
 
-	private 
-	attr_reader :board
+	def valid_position?(position)
+		position.is_a?(Array) && 
+		position.length == 2 && 
+		position.all? { |index| index.between?(0, board.size - 1) }
+	end
+
+	def valid_value?(value)
+		value.is_a?(Integer) && value.between?(0, 9) 
+	end
 
 end
 
