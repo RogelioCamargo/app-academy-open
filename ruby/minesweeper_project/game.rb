@@ -1,3 +1,4 @@
+require "yaml"
 require_relative "board"
 
 class MinesweeperGame
@@ -10,7 +11,6 @@ class MinesweeperGame
 	def play 
 		until won? || lost? 
 			puts render 
-			puts reveal
 			action, position = get_move
 			perform_action(action, position)
 		end
@@ -26,6 +26,7 @@ class MinesweeperGame
 	private 
 
 	def get_move
+		print "Enter a move: "
 		action, x, y = gets.chomp.split(",")
 		[action, [x.to_i, y.to_i]]
 	end
@@ -37,9 +38,17 @@ class MinesweeperGame
 			tile.toggle_flag
 		when "e"
 			tile.explore 
+		when "s"
+			save 
 		else 
 			puts "Choose one of the options"
 		end
+	end
+
+	def save 
+		print "Enter a filename to save at: "
+		filename = gets.chomp 
+		File.write(filename, YAML.dump(self))
 	end
 
 	def lost? 
@@ -61,5 +70,10 @@ class MinesweeperGame
 end
 
 if $PROGRAM_NAME == __FILE__
-  MinesweeperGame.new.play
+  case ARGV.count
+  when 0
+    MinesweeperGame.new.play
+  when 1
+    YAML.load_file(ARGV.shift, permitted_classes: [MinesweeperGame, Board, Tile], aliases: true).play
+  end
 end
