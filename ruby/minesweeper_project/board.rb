@@ -39,9 +39,9 @@ class Board
 
 	private
 	def generate_board 
-		@grid = Array.new(GRID_SIZE) do |row|
-			Array.new(GRID_SIZE) do |col|
-				Tile.new(self, [row, col])
+		@grid = Array.new(GRID_SIZE) do |x|
+			Array.new(GRID_SIZE) do |y|
+				Tile.new(self, [x, y])
 			end
 		end
 
