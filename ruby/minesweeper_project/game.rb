@@ -74,6 +74,13 @@ if $PROGRAM_NAME == __FILE__
   when 0
     MinesweeperGame.new.play
   when 1
-    YAML.load_file(ARGV.shift, permitted_classes: [MinesweeperGame, Board, Tile], aliases: true).play
+    YAML.load_file(
+			ARGV.shift, 
+			permitted_classes: [
+				MinesweeperGame, 
+				Board, Tile
+			],
+			aliases: true
+		).play
   end
 end
