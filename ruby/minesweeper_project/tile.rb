@@ -33,13 +33,15 @@ class Tile
 	end
 
 	def explore 
-		return if flagged?
-		return if explored?
+		return self if flagged?
+		return self if explored?
 
 		@explored = true 
 		if neighbor_bomb_count == 0 && !bombed?
 			neighbors.each { |neighbor| neighbor.explore }
 		end
+
+		self
 	end
 
 	def neighbors 
@@ -47,14 +49,14 @@ class Tile
 			x, y = position
 			[x + dx, y + dy] 
 		end.select do |position|
-			position.each { |coordinate| coordinate.between?(0, board.size) }
+			position.all? { |coordinate| coordinate.between?(0, board.size - 1) }
 		end
 
 		neighbor_coordinates.map { |position| board[position] }
 	end
 
 	def neighbor_bomb_count 
-		neighbors.select(&:bombed?).count
+		neighbors.select { |neigbor| neigbor.bombed? }.count 
 	end
 
 	def inspect 
