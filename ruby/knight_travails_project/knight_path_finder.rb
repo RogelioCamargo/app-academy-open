@@ -29,6 +29,14 @@ class KnightPathFinder
 		build_move_tree
 	end
 
+	def find_path(ending_position)
+		ending_node = @root_node.dfs(ending_position)
+		path = trace_path_back(ending_node)
+		path.reverse.map(&:value)
+	end
+
+	private
+
 	def new_move_positions(position)
 		valid_moves = KnightPathFinder.valid_moves(position)
 		new_moves = []
@@ -50,13 +58,25 @@ class KnightPathFinder
 			next_positions = new_move_positions(current_position)
 			next_positions.each do |next_position|
 				next_node = PolyTreeNode.new(next_position)
-				next_node.parent = current_node
+				current_node.add_child(next_node)
 				queue << next_node
 			end
 		end
 	end
+
+	def trace_path_back(ending_node)
+		path = [ending_node] 
+		previous_node = ending_node.parent
+		until previous_node.nil? do
+			path << previous_node 
+			previous_node = previous_node.parent 
+		end
+		path
+	end
 end
 
 if $PROGRAM_NAME == __FILE__
-	kpf = KnightPathFinder.new([0,0])
+	kpf = KnightPathFinder.new([0, 0])
+	p kpf.find_path([7, 6]) # => [[0, 0], [1, 2], [2, 4], [3, 6], [5, 5], [7, 6]]
+	p kpf.find_path([6, 2]) # => [[0, 0], [1, 2], [2, 0], [4, 1], [6, 2]]
 end
