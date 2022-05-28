@@ -42,9 +42,9 @@ class TicTacToeNode
 				pos = [row, col]
 				if board.empty?(pos)
 					dup_board = board.dup
-					dup_board[pos] = next_mover_mark
-					next_mark = next_mover_mark == :x ? :o : :x
-					children << TicTacToeNode.new(dup_board, next_mark, pos)
+					dup_board[pos] = self.next_mover_mark
+					next_mover_mark = self.next_mover_mark == :x ? :o : :x
+					children << TicTacToeNode.new(dup_board, next_mover_mark, pos)
 				end
 			end
 		end
