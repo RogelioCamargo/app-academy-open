@@ -10,8 +10,8 @@ class NullPiece < Piece
 		@color = :none 
 	end
 
-	def symbol 
-		" "
+	def empty? 
+		true
 	end
 
 	def moves 
