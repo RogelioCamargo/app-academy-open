@@ -57,7 +57,7 @@ class Board
 	end
 
 	def in_check?(color)
-		king_position = find_king(color)
+		king_position = find_king(color).position
 		pieces.any? do |piece|
 			piece.color != color && piece.moves.include?(king_position)
 		end
@@ -85,7 +85,7 @@ class Board
 
 	def find_king(color)
 		king_piece = pieces.find { |piece| piece.color != color && piece.is_a?(King) }
-		king_piece || raise "king not found"
+		king_piece || (raise "king not found")
 	end
 
 	def fill_back_row(color)
