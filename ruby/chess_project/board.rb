@@ -30,7 +30,7 @@ class Board
 	end
 
 	def move_piece(turn_color, start_position, end_position)
-		raise "start position is empty" unless empty?(start_position)
+		raise "start position is empty" if empty?(start_position)
 		piece = self[start_position]
 
 		if piece.color != turn_color 
@@ -51,22 +51,29 @@ class Board
 		piece.position = end_position
 	end
 
+	def render 
+		rows.each do |row|
+			puts row.join("")
+		end
+		nil
+	end
+
 	private 
 
-	attr_reader :sentinel
+	attr_reader :sentinel, :rows 
 
 	def fill_back_row(color)
 		back_pieces = [
       Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook
     ]
-		row = color == :white : 7 : 0 
+		row = color == :white ? 7 : 0 
 		back_pieces.each_with_index do |piece, index|
 			piece.new(color, self, [row, index])
 		end
 	end
 
 	def fill_pawn_row(color)
-		row = color == :white : 6 : 1 
+		row = color == :white ? 6 : 1 
 		(0..7).each do |index|
 			Pawn.new(color, self, [row, index])
 		end
@@ -74,7 +81,7 @@ class Board
 
 	def populate_rows
 		@rows = Array.new(8) { Array.new(8, sentinel) }
-		[:white, :black].each do |color|
+		[:white, :blue].each do |color|
 			fill_back_row(color)
 			fill_pawn_row(color)
 		end
