@@ -2,6 +2,9 @@ class Piece
 	attr_reader :color, :board, :position
 	attr_writer :position
 	def initialize(color, board, position)
+		raise "invalid color" unless %i(white black).include?(color)
+		raise "invalid position" unless board.valid_position?(position)
+
 		@color = color
 		@board = board 
 		@position = position
@@ -18,7 +21,7 @@ class Piece
 	end
 
 	def valid_moves
-		raise NotImplementedError
+		moves.reject { |end_position| move_into_check?(end_position) }
 	end
 
 	def symbol
@@ -26,6 +29,8 @@ class Piece
 	end
 
 	def move_into_check?(end_position)
-		raise NotImplementedError
+		board_dup = board.dup 
+		board_dup.move_piece!(position, end_position)
+		board_dup.in_check?(color)
 	end
 end
