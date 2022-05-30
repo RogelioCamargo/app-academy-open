@@ -1,6 +1,7 @@
 require_relative "pieces"
 
 class Board 
+	attr_reader :rows
 	def initialize
 		@sentinel = NullPiece.instance
 		populate_rows  
@@ -51,16 +52,9 @@ class Board
 		piece.position = end_position
 	end
 
-	def render 
-		rows.each do |row|
-			puts row.join("")
-		end
-		nil
-	end
-
 	private 
 
-	attr_reader :sentinel, :rows 
+	attr_reader :sentinel 
 
 	def fill_back_row(color)
 		back_pieces = [
@@ -81,7 +75,7 @@ class Board
 
 	def populate_rows
 		@rows = Array.new(8) { Array.new(8, sentinel) }
-		[:white, :blue].each do |color|
+		[:white, :black].each do |color|
 			fill_back_row(color)
 			fill_pawn_row(color)
 		end
