@@ -44,10 +44,10 @@ class Display
 
 end
 
-b = Board.new 
-d = Display.new(b)
+# b = Board.new 
+# d = Display.new(b)
 
-loop do 
-	d.render
-	d.cursor.get_input
-end
+# loop do 
+# 	d.render
+# 	d.cursor.get_input
+# end

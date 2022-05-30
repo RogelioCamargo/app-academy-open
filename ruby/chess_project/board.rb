@@ -52,9 +52,33 @@ class Board
 		piece.position = end_position
 	end
 
+	def pieces 
+		rows.flatten.reject(&:empty?)
+	end
+
+	def in_checkmate?(color)
+		king_position = find_king(color)
+		pieces.any? do |piece|
+			piece.color != color && piece.moves.include?(king_position)
+		end
+	end
+
+	def checkmate?(color)
+		return false unless in_checkmate?(color)
+
+		pieces.select { |piece| piece.color == color }.all? do |piece|
+			piece.valid_moves.empty?
+		end
+	end
+
 	private 
 
 	attr_reader :sentinel 
+
+	def find_king(color)
+		king_piece = pieces.find { |piece| piece.color != color && piece.is_a?(King) }
+		king_piece || raise "king not found"
+	end
 
 	def fill_back_row(color)
 		back_pieces = [
