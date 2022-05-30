@@ -1,12 +1,4 @@
 module Slideable
-	def horizontal_and_vertical_directions 
-		HORIZONTAL_AND_VERTICAL_DIRECTIONS
-	end
-
-	def diagonal_directions 
-		DIAGONAL_DIRECTIONS
-	end
-
 	def moves 
 		moves = []
 		move_directions.each do |dx, dy|
@@ -20,6 +12,14 @@ module Slideable
 	HORIZONTAL_AND_VERTICAL_DIRECTIONS = [[1,0], [0,1], [-1,0], [0,-1]].freeze
 	DIAGONAL_DIRECTIONS = [[1,1], [1,-1], [-1,1], [-1, -1]].freeze 
 
+	def horizontal_and_vertical_directions 
+		HORIZONTAL_AND_VERTICAL_DIRECTIONS
+	end
+
+	def diagonal_directions 
+		DIAGONAL_DIRECTIONS
+	end
+	
 	def move_directions 
 		raise NotImplementedError
 	end 
