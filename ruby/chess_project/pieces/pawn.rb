@@ -1,4 +1,5 @@
 require_relative "piece"
+require 'colorize'
 
 class Pawn < Piece
 	def symbol 
@@ -12,7 +13,7 @@ class Pawn < Piece
 	private 
 
 	def at_start_row? 
-		position[0] == (color == :white ? 6 : 1)
+		position[0] == ((color == :white) ? 6 : 1)
 	end
 
 	def forward_direction 
@@ -22,9 +23,9 @@ class Pawn < Piece
 	def forward_steps 
 		x, y = position
 		one_step = [x + forward_direction, y]
-		return [] unless board.valid_position?(one_step) && board.empty?
+		return [] unless board.valid_position?(one_step) && board.empty?(one_step)
 		moves = [one_step]
-		two_step = [1 + 2 * forward_direction, y]
+		two_step = [x + 2 * forward_direction, y]
 		moves << two_step if at_start_row? && board.empty?(two_step)
 		moves 
 	end
@@ -36,9 +37,9 @@ class Pawn < Piece
 		moves = [left_attack, right_attack]
 		moves.select do |new_position|
 			next false unless board.valid_position?(new_position)
-			next false unless board.empty?(new_position)
+			next false if board.empty?(new_position)
 
-			# threatened_piece = board[new_position]
+			threatened_piece = board[new_position]
 			# threatened_piece && threatened_piece.color != color
 			threatened_piece.color != color
 		end

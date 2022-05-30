@@ -1,5 +1,6 @@
 require_relative "slideable" 
 require_relative "piece"
+require 'colorize'
 
 class Rook < Piece
 	include Slideable

@@ -1,10 +1,12 @@
 class Piece 
 	attr_reader :color, :board, :position
-
+	attr_writer :position
 	def initialize(color, board, position)
 		@color = color
 		@board = board 
 		@position = position
+
+		board.add_piece(self, position)
 	end
 
 	def to_s
