@@ -2,9 +2,9 @@ require_relative "pieces"
 
 class Board 
 	attr_reader :rows
-	def initialize
+	def initialize(fill_board = true)
 		@sentinel = NullPiece.instance
-		populate_rows  
+		populate_rows(fill_board)
 	end
 
 	def [](position)
@@ -56,7 +56,7 @@ class Board
 		rows.flatten.reject(&:empty?)
 	end
 
-	def in_checkmate?(color)
+	def in_check?(color)
 		king_position = find_king(color)
 		pieces.any? do |piece|
 			piece.color != color && piece.moves.include?(king_position)
@@ -64,11 +64,19 @@ class Board
 	end
 
 	def checkmate?(color)
-		return false unless in_checkmate?(color)
+		return false unless in_check?(color)
 
 		pieces.select { |piece| piece.color == color }.all? do |piece|
 			piece.valid_moves.empty?
 		end
+	end
+
+	def dup 
+		board_dup = Board.new(false)
+		pieces.each do |piece| 
+			piece.class.new(piece.color, board_dup, piece.position) 
+		end
+		board_dup
 	end
 
 	private 
@@ -97,9 +105,10 @@ class Board
 		end
 	end
 
-	def populate_rows
+	def populate_rows(fill_board)
 		@rows = Array.new(8) { Array.new(8, sentinel) }
-		[:white, :black].each do |color|
+		return unless fill_board
+		%i(white black).each do |color|
 			fill_back_row(color)
 			fill_pawn_row(color)
 		end
