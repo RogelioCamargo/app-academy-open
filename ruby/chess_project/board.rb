@@ -38,6 +38,8 @@ class Board
 			raise "you must move your own pieces"
 		elsif !piece.moves.include?(end_position)
 			raise "piece does not move like that"
+		elsif !piece.valid_moves.include?(end_position)
+			raise "you can't move into check"
 		end
 
 		move_piece!(start_position, end_position)
@@ -47,9 +49,11 @@ class Board
 		piece = self[start_position]
 		raise "piece does not move like that" unless piece.moves.include?(end_position)
 
-		self[start_position] = sentinel 
 		self[end_position] = piece 
+		self[start_position] = sentinel 
 		piece.position = end_position
+
+		nil
 	end
 
 	def pieces 
@@ -84,7 +88,7 @@ class Board
 	attr_reader :sentinel 
 
 	def find_king(color)
-		king_piece = pieces.find { |piece| piece.color != color && piece.is_a?(King) }
+		king_piece = pieces.find { |piece| piece.color == color && piece.is_a?(King) }
 		king_piece || (raise "king not found")
 	end
 
