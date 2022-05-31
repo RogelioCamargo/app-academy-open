@@ -1,18 +1,20 @@
 require "colorize"
-require_relative "board"
 require_relative "cursor"
 
 class Display
-  attr_reader :board, :cursor
+  attr_reader :board, :cursor, :notifications
 
   def initialize(board)
     @board = board
     @cursor = Cursor.new([0, 0], board)
+		@notifications = {}
   end
 
   def build_grid
-    @board.rows.map.with_index do |row, row_index|
-      build_row(row, row_index)
+		puts "  #{("a".."h").to_a.map { |char| " #{char} " }.join}"
+		row_indices = (1..8).to_a.reverse
+    board = @board.rows.map.with_index do |row, row_index|
+      ["#{row_indices[row_index]} "] + build_row(row, row_index)
     end
   end
 
@@ -36,18 +38,26 @@ class Display
     { background: bg }
   end
 
+	def reset! 
+		@notifications.delete(:error)
+	end
+
+	def uncheck!
+		@notifications.delete(:check)
+	end
+
+	def set_check! 
+		@notifications[:check] = "Check!"
+	end
+
   def render
     system("clear")
     puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
     build_grid.each { |row| puts row.join }
+
+		@notifications.each do |key, value|
+			puts value
+		end
   end
 
 end
-
-# b = Board.new 
-# d = Display.new(b)
-
-# loop do 
-# 	d.render
-# 	d.cursor.get_input
-# end
