@@ -10,9 +10,12 @@ class HumanPlayer < Player
 				puts "#{color}'s turn. Move to where?"
 				end_position = display.cursor.get_input
 
+				display.reset! if end_position
 			else
 				puts "#{color}'s turn. Move from where?"
 				start_position = display.cursor.get_input
+
+				display.reset! if start_position
 			end
 		end
 		[start_position, end_position]

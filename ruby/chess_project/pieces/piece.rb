@@ -28,8 +28,10 @@ class Piece
 		raise NotImplementedError
 	end
 
+	private
+
 	def move_into_check?(end_position)
-		board_dup = board.dup 
+		board_dup = board.dup
 		board_dup.move_piece!(position, end_position)
 		board_dup.in_check?(color)
 	end
