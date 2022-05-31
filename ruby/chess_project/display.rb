@@ -10,7 +10,31 @@ class Display
 		@notifications = {}
   end
 
-  def build_grid
+	def reset! 
+		@notifications.delete(:error)
+	end
+
+	def uncheck!
+		@notifications.delete(:check)
+	end
+
+	def set_check! 
+		@notifications[:check] = "Check!"
+	end
+
+  def render
+    system("clear")
+    puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
+    build_grid.each { |row| puts row.join }
+
+		@notifications.each do |key, value|
+			puts value
+		end
+  end
+
+	private 
+
+	def build_grid
 		puts "  #{("a".."h").to_a.map { |char| " #{char} " }.join}"
 		row_indices = (1..8).to_a.reverse
     board = @board.rows.map.with_index do |row, row_index|
@@ -36,28 +60,6 @@ class Display
       bg = :light_yellow
     end
     { background: bg }
-  end
-
-	def reset! 
-		@notifications.delete(:error)
-	end
-
-	def uncheck!
-		@notifications.delete(:check)
-	end
-
-	def set_check! 
-		@notifications[:check] = "Check!"
-	end
-
-  def render
-    system("clear")
-    puts "Arrow keys, WASD, or vim to move, space or enter to confirm."
-    build_grid.each { |row| puts row.join }
-
-		@notifications.each do |key, value|
-			puts value
-		end
   end
 
 end

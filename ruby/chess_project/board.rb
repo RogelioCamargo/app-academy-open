@@ -56,10 +56,6 @@ class Board
 		nil
 	end
 
-	def pieces 
-		rows.flatten.reject(&:empty?)
-	end
-
 	def in_check?(color)
 		king_position = find_king(color).position
 		pieces.any? do |piece|
@@ -86,6 +82,10 @@ class Board
 	private 
 
 	attr_reader :sentinel 
+
+	def pieces 
+		rows.flatten.reject(&:empty?)
+	end
 
 	def find_king(color)
 		king_piece = pieces.find { |piece| piece.color == color && piece.is_a?(King) }

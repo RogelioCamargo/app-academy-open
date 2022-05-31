@@ -31,7 +31,9 @@ class ChessGame
 		puts "#{current_player} is checkmated."
 
 		nil
-	end
+	end 
+
+	private 
 
 	def notify_players
 		if board.in_check?(current_player)

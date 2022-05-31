@@ -40,10 +40,6 @@ class Cursor
 		@selected = false 
   end
 
-	def toggle_selected
-		@selected = !@selected
-	end
-
   def get_input
     key = KEYMAP[read_char]
     handle_key(key)
@@ -79,6 +75,10 @@ class Cursor
 
     return input
   end
+
+	def toggle_selected
+		@selected = !@selected
+	end
 
   def handle_key(key)
 		case key 
