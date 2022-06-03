@@ -12,12 +12,24 @@ def my_permutations(string)
 end
 
 # O(n!)
+# def anagram?(str_1, str_2)
+# 	perms = my_permutations(str_1)
+# 	perms.each do |perm|
+# 		return true if perm == str_2
+# 	end
+# 	false
+# end
+
+# O(n^2)
 def anagram?(str_1, str_2)
-	perms = my_permutations(str_1)
-	perms.each do |perm|
-		return true if perm == str_2
+	str2_array = str_2.split("")
+	str_1.each_char do |ch|
+		idx = str2_array.find_index(ch)
+		return false if idx.nil?  
+		p str2_array
+		str2_array.delete_at(idx)
 	end
-	false
+	str2_array.empty? ? true : false
 end
 
 
