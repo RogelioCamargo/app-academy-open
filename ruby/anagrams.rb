@@ -21,17 +21,23 @@ end
 # end
 
 # O(n^2)
-def anagram?(str_1, str_2)
-	str2_array = str_2.split("")
-	str_1.each_char do |ch|
-		idx = str2_array.find_index(ch)
-		return false if idx.nil?  
-		p str2_array
-		str2_array.delete_at(idx)
-	end
-	str2_array.empty? ? true : false
-end
+# def anagram?(str_1, str_2)
+# 	str2_array = str_2.split("")
+# 	str_1.each_char do |ch|
+# 		idx = str2_array.find_index(ch)
+# 		return false if idx.nil?  
+# 		p str2_array
+# 		str2_array.delete_at(idx)
+# 	end
+# 	str2_array.empty? ? true : false
+# end
 
+# O(nlogn)
+def anagram?(str_1, str_2)
+	str1_sorted = str_1.split("").sort
+	str2_sorted = str_2.split("").sort 
+	str1_sorted == str2_sorted
+end
 
 p anagram?("elvis", "lives")    #=> true
 p anagram?("gizmo", "sally")    #=> false
