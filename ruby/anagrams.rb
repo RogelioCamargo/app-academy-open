@@ -33,10 +33,25 @@ end
 # end
 
 # O(nlogn)
+# def anagram?(str_1, str_2)
+# 	str1_sorted = str_1.split("").sort
+# 	str2_sorted = str_2.split("").sort 
+# 	str1_sorted == str2_sorted
+# end
+
 def anagram?(str_1, str_2)
-	str1_sorted = str_1.split("").sort
-	str2_sorted = str_2.split("").sort 
-	str1_sorted == str2_sorted
+	counts = Hash.new(0)
+	str_1.each_char do |ch|
+		counts[ch] += 1
+	end
+	str_2.each_char do |ch|
+		counts[ch] -= 1
+	end
+
+	counts.each do |k, v|
+		return false if v != 0 
+	end
+	true
 end
 
 p anagram?("elvis", "lives")    #=> true
