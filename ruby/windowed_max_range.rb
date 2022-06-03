@@ -119,3 +119,35 @@ end
 # p q
 # p q.dequeue
 # p q
+
+class MinMaxStack < MyStack 
+	def push(value)
+		if self.empty?
+			@store << { value: value, min: value, max: value }
+		else 
+			last = self.peek 
+			@store << { 
+				value: value, 
+				min: [value, last[:min]].min,
+				max: [value, last[:max]].max
+			}
+		end
+	end
+
+	def min 
+		return nil if self.empty? 
+		self.last.min 
+	end
+
+	def max 
+		return nil if self.empty? 
+		self.last.max
+	end
+end
+
+s = MinMaxStack.new 
+s.push(1)
+s.push(2)
+s.push(3)
+p s
+p s.peek
