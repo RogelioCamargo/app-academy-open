@@ -123,52 +123,50 @@ end
 
 class MinMaxStack
   def initialize
-    @store = MyStack.new
-  end
+		@store = MyStack.new
+	end 
 
-  def peek
-    @store.peek[:value] unless empty?
-  end
+	def push(value)
+		@store.push({
+			value: value, 
+			min: new_min(value), 
+			max: new_max(value)
+		})
+	end
 
-  def size
-    @store.size
-  end
+	def pop 
+		@store.pop[:value] unless empty? 
+	end
 
-  def empty?
-    @store.empty?
-  end
+	def min 
+		@store.peek[:min] unless empty? 
+	end
 
-  def max
-    @store.peek[:max] unless empty?
-  end
+	def max 
+		@store.peek[:max] unless empty? 
+	end
 
-  def min
-    @store.peek[:min] unless empty?
-  end
+	def size 
+		@store.size
+	end
 
-  def pop
-    @store.pop[:value] unless empty?
-  end
+	def peek 
+		@store.peek[:value] unless empty?
+	end
 
-  def push(val)
-    # By using a little extra memory, we can get the max simply by peeking,
-    # which is O(1).
-    @store.push({
-      max: new_max(val),
-      min: new_min(val),
-      value: val
-    })
-  end
+	def empty? 
+		@store.empty?
+	end
 
-  private
+	private 
 
-  def new_max(val)
-    empty? ? val : [max, val].max
-  end
+	def new_min(value)
+		empty? ? value : [min, value].min 
+	end
 
-  def new_min(val)
-    empty? ? val : [min, val].min
-  end
+	def new_max(value)
+		empty? ? value : [max, value].max
+	end
 end
 
 # s = MinMaxStack.new 
@@ -177,65 +175,65 @@ end
 # s.push(7)
 # s.push(6)
 # s.push(1)
-# s.render
+# # s.render
 # p s.min 
 # p s.max 
 # s.pop 
 # s.pop 
-# s.render
+# # s.render
 # p s.min 
 # p s.max 
 
 
-class MinMaxStackQueue < StackQueue
+class MinMaxStackQueue
 	def initialize
-    @in_stack = MinMaxStack.new
-    @out_stack = MinMaxStack.new
-  end
+		@in = MinMaxStack.new 
+		@out = MinMaxStack.new
+	end
 
-  def size
-    @in_stack.size + @out_stack.size
-  end
+	def enqueue(value)
+		@in.push(value)
+	end
 
-  def empty?
-    @in_stack.empty? && @out_stack.empty?
-  end
+	def dequeue
+		transfer if @out.empty? 
+		@out.pop
+	end
 
-  def dequeue
-    queueify if @out_stack.empty?
-    @out_stack.pop
-  end
+	def min 
+		mins = [] 
+		mins << @in.min unless @in.empty?
+		mins << @out.min unless @out.empty? 
+		mins.min
+	end
 
-  def enqueue(val)
-    @in_stack.push(val)
-  end
+	def max 
+		maxs = [] 
+		maxs << @in.max unless @in.empty?
+		maxs << @out.max unless @out.empty? 
+		maxs.max
+	end
 
-  def max
-    # At most two operations; O(1)
-    maxes = []
-    maxes << @in_stack.max unless @in_stack.empty?
-    maxes << @out_stack.max unless @out_stack.empty?
-    maxes.max
-  end
+	def empty? 
+		@in.empty? && @out.empty?
+	end
 
-  def min
-    mins = []
-    mins << @in_stack.min unless @in_stack.empty?
-    mins << @out_stack.min unless @out_stack.empty?
-    mins.min
-  end
+	def size 
+		@in.size + @out.size
+	end
 
-  private
-  def queueify
-    @out_stack.push(@in_stack.pop) until @in_stack.empty?
-  end
+	private 
+
+	def transfer 
+		@out.push(@in.pop) until @in.empty?
+	end
 end
    
 q = MinMaxStackQueue.new 
 q.enqueue(1)
 q.enqueue(2)
 q.enqueue(3)
-p q.min
+p q.min # 1
 p q
 q.dequeue
 p q
