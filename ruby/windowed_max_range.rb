@@ -1,17 +1,17 @@
 # O(nk)
 # O(k)
-def windowed_max_range(array, size)
-	current_max_range = nil 
-	(0..array.length - size).each do |i|
-		min = array[i...i+size].min 
-		max = array[i...i+size].max
-		range = max - min 
-		if current_max_range.nil? || range > current_max_range 
-			current_max_range = range 
-		end
-	end
-	current_max_range
-end
+# def windowed_max_range(array, size)
+# 	current_max_range = nil 
+# 	(0..array.length - size).each do |i|
+# 		min = array[i...i+size].min 
+# 		max = array[i...i+size].max
+# 		range = max - min 
+# 		if current_max_range.nil? || range > current_max_range 
+# 			current_max_range = range 
+# 		end
+# 	end
+# 	current_max_range
+# end
 
 # p windowed_max_range([1, 0, 2, 5, 4, 8], 2) == 4 # 4, 8
 # p windowed_max_range([1, 0, 2, 5, 4, 8], 3) == 5 # 0, 2, 5
@@ -122,6 +122,7 @@ end
 # p q
 
 class MinMaxStack
+	attr_reader :store
   def initialize
 		@store = MyStack.new
 	end 
@@ -186,6 +187,7 @@ end
 
 
 class MinMaxStackQueue
+	attr_reader :in, :out
 	def initialize
 		@in = MinMaxStack.new 
 		@out = MinMaxStack.new
@@ -229,14 +231,34 @@ class MinMaxStackQueue
 	end
 end
    
-q = MinMaxStackQueue.new 
-q.enqueue(1)
-q.enqueue(2)
-q.enqueue(3)
-p q.min # 1
-p q
-q.dequeue
-p q
-p q.min 
-q.dequeue
-p q.min
+# q = MinMaxStackQueue.new 
+# q.enqueue(1)
+# q.enqueue(2)
+# q.enqueue(3)
+# p q.min # 1
+# p q
+# q.dequeue
+# p q
+# p q.min 
+# q.dequeue
+# p q.min
+
+def windowed_max_range(array, window_size)
+	q = MinMaxStackQueue.new 
+	window_size.times { |i| q.enqueue(array[i]) }
+	current_max_range = q.max - q.min  
+	(window_size...array.length).each do |i|
+		q.dequeue 
+		q.enqueue(array[i])
+		range = q.max - q.min 
+		if current_max_range.nil? || range > current_max_range 
+			current_max_range = range
+		end
+	end
+	current_max_range
+end
+
+p windowed_max_range([1, 0, 2, 5, 4, 8], 2) == 4 # 4, 8
+p windowed_max_range([1, 0, 2, 5, 4, 8], 3) == 5 # 0, 2, 5
+p windowed_max_range([1, 0, 2, 5, 4, 8], 4) == 6 # 2, 5, 4, 8
+p windowed_max_range([1, 3, 2, 5, 4, 8], 5) == 6 # 3, 2, 5, 4, 8
