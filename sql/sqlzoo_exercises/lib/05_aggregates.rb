@@ -36,9 +36,7 @@ def africa_gdp
 			SUM(gdp)
 		FROM 
 			countries 
-		GROUP BY 
-			continent
-		HAVING 
+		WHERE 
 			continent = 'Africa'
   SQL
 end
