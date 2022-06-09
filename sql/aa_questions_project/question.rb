@@ -16,11 +16,15 @@ class Question
 	end
 
 	def self.find_by_author_id(author_id)
-		questions_by_author = QuestionsDatabase.execute(<<-SQL, author_id)
+		questions_data = QuestionsDatabase.execute(<<-SQL, author_id)
 			SELECT * FROM questions WHERE author_id = ? 
 		SQL
 
-		questions_by_author.map { |question_data| Question(question_data) }
+		questions_data.map { |question_data| Question(question_data) }
+	end
+
+	def self.most_followed(n)
+		QuestionFollow.most_followed_questions(n)
 	end
 
 	def initialize(options)
