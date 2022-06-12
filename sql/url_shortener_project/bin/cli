@@ -15,7 +15,7 @@ class CLI
 	def create_url 
 		print 'Type in your long url: ' 
 		long_url = gets.chomp 
-		shorten_url = ShortenedUrl.create_with_user_and_long_url(
+		shorten_url = ShortenedUrl.create_with_user_and_long_url!(
 			@current_user, 
 			long_url
 		)
