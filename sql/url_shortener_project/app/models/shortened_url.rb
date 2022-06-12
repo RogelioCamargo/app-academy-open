@@ -21,7 +21,7 @@ class ShortenedUrl < ApplicationRecord
 
 	has_many :taggings, 
 		primary_key: :id, 
-		foreign_key: :shorten_url_id, 
+		foreign_key: :shortened_url_id, 
 		class_name: :Tagging, 
 		dependent: :destroy 
 
@@ -42,6 +42,23 @@ class ShortenedUrl < ApplicationRecord
 			random_code = SecureRandom::urlsafe_base64(16)
 			return random_code unless ShortenedUrl.exists?(short_url: random_code)
 		end
+	end
+
+	def self.prune(n)
+		ShortenedUrl
+      .joins(:submitter)
+      .joins('LEFT JOIN visits ON visits.shorten_url_id = shortened_urls.id')
+      .where("(shortened_urls.id IN (
+        SELECT shortened_urls.id
+        FROM shortened_urls
+        JOIN visits
+        ON visits.shorten_url_id = shortened_urls.id
+        GROUP BY shortened_urls.id
+        HAVING MAX(visits.created_at) < \'#{n.minute.ago}\'
+      ) OR (
+        visits.id IS NULL and shortened_urls.created_at < \'#{n.minutes.ago}\'
+      )) AND users.premium = \'f\'")
+      .destroy_all
 	end
 
 	def num_clicks 
