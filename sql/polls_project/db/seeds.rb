@@ -36,3 +36,4 @@ ActiveRecord::Base.transaction do
     respondent: u2,
     answer_choice: ac4
   )
+end
