@@ -14,4 +14,16 @@ class Question < ApplicationRecord
 	has_many :responses, 
 		through: :answer_choices,
 		source: :responses
+
+	def results 
+		answer_choice_counts = self.answer_choices
+			.select('answer_choices.text, COUNT(responses.id) AS votes')
+			.left_outer_joins(:responses)
+			.group('answer_choices.id')
+
+		results = {} 
+		answer_choice_counts.each { |object| results[object.text] = object.votes }
+		results
+	end
+	
 end
