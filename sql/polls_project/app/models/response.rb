@@ -13,7 +13,9 @@ class Response < ApplicationRecord
 		through: :answer_choice, 
 		source: :question
 
-	validate :not_duplicate_response
+	validate :not_duplicate_response, unless: -> { answer_choice.nil? }
+
+	validate :respondent_is_not_poll_author, unless: -> { answer_choice.nil? }
 
 	def sibling_responses
 		self.question.responses.where.not(id: self.id)
@@ -27,7 +29,14 @@ class Response < ApplicationRecord
 
 	def not_duplicate_response
 		if respondent_already_answered? 
-			errors.add(:respondent_id, 'cannot answer the same question twice')
+			errors.add(:respondent_id, 'cannot vote twice for question')
 		end
 	end 
+
+	def respondent_is_not_poll_author
+		poll_author_id = self.answer_choice.question.poll.author_id
+		if poll_author_id == self.respondent_id
+			errors.add(:respondent_id, 'cannot be the poll author')
+		end
+	end
 end
