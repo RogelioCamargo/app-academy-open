@@ -1,9 +1,0 @@
-<h1><%= @goal.title %></h1>
-<p><%= @goal.details %></p>
-
-<h2>Comments</h2>
-<% @goal.comments.each do |comment| %>
-	<p><%= comment.body %></p>
-<% end %>
-
-<%= render "shared/comments_form", commentable_id: @goal.id, commentable_type: "Goal" %>
