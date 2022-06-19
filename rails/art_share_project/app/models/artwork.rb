@@ -8,6 +8,7 @@ class Artwork < ApplicationRecord
 		class_name: :User 
 
 	has_many :artwork_shares 
+		dependent: :destory
 
 	has_many :shared_viewers, 
 		through: :artwork_shares,
