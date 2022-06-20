@@ -24,6 +24,27 @@ class CollectionsController < ApplicationController
     render json: collection
   end
 
+	def add_artwork
+    artwork_collection = ArtworkCollection.new(
+      artwork_id: params[:artwork_id], 
+      collection_id: params[:collection_id]
+    )
+    if artwork_collection.save
+      render json: artwork_collection, status: :created
+    else
+      render json: artwork_collection.errors.full_messages, status: :unprocessable_entity
+    end
+  end
+
+  def remove_artwork
+    collection = ArtworkCollection.find_by(
+      artwork_id: params[:artwork_id], 
+      collection_id: params[:collection_id]
+    )
+    collection.destroy
+    render json: collection
+  end
+
 	private
 
   def collection_params
