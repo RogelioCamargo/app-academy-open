@@ -27,6 +27,9 @@ class User < ApplicationRecord
 		source: :likeable, 
 		source_type: 'Artwork'
 
+	has_many :collections, 
+		dependent: :destroy
+
 	def favorite_artworks 
 		artworks.where(favorite: true)
 	end
