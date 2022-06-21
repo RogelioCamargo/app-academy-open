@@ -10,7 +10,7 @@ class Cat < ApplicationRecord
 	validates :sex, inclusion: %w(M F)
 
 	has_many :rental_requests,
-		class_name: :CatRentalRequests,
+		class_name: :CatRentalRequest,
 		dependent: :destroy
 
 	def age 
