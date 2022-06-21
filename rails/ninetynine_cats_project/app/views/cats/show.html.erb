@@ -19,3 +19,27 @@
 
 <%= link_to 'Edit details', edit_cat_url(@cat) %>
 
+<br>
+<br>
+
+<table>
+	<thead>
+		<tr>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @cat.rental_requests.each do |rental_request| %>
+			<tr>
+				<td><%= rental_request.start_date %></td>
+				<td><%= rental_request.end_date %></td>
+				<td><%= rental_request.status %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<%= link_to 'Create Rental Request', new_cat_rental_request_url %>
+
