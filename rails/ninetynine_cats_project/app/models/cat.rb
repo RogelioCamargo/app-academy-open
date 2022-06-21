@@ -9,6 +9,10 @@ class Cat < ApplicationRecord
 	validates :color, inclusion: CAT_COLORS
 	validates :sex, inclusion: %w(M F)
 
+	has_many :rental_requests,
+		class_name: :CatRentalRequests,
+		dependent: :destroy
+
 	def age 
 		time_ago_in_words(birth_date)
 	end
