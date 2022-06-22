@@ -35,7 +35,18 @@
 			<tr>
 				<td><%= rental_request.start_date %></td>
 				<td><%= rental_request.end_date %></td>
-				<td><%= rental_request.status %></td>
+				<td>
+					<% if rental_request.pending? %>
+						<form action="<%= approve_cat_rental_request_url(rental_request) %>" method="post">
+						<input type="submit" value="Approve">
+						</form>
+						<form action="<%= deny_cat_rental_request_url(rental_request) %>" method="post">
+							<input type="submit" value="Deny">
+						</form>
+					<% else %>
+						<%= rental_request.status %>
+					<% end %>
+				</td>
 			</tr>
 		<% end %>
 	</tbody>
