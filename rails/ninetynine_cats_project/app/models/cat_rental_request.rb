@@ -12,7 +12,8 @@ class CatRentalRequest < ApplicationRecord
 	def approve! 
 		raise 'not pending' unless self.status == 'PENDING'
 		transaction do 
-			self.update!(status: 'APPROVED')
+			self.status = 'DENIED'
+			self.save! 
 
 			overlapping_pending_requests.each do |request|
 				request.update!(status: 'DENIED')
@@ -68,7 +69,7 @@ class CatRentalRequest < ApplicationRecord
 	end
 
 	def start_must_come_before_end 
-		unless self.start_date < self.end_date 
+		unless start_date < end_date 
 			errors.add(:start_date, 'must come before end date')
 			errors.add(:end_date, 'must come after start date')
 		end
