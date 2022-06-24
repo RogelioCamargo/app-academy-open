@@ -14,7 +14,8 @@ class SessionsController < ApplicationController
 			render :new, status: :unprocessable_entity
 		else 
 			login_user!(user)
-			redirect_to new_session_url
+			redirect_to cats_url
+		end
 	end
 
 	def destroy 

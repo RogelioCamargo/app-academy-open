@@ -2,6 +2,8 @@
 	<div class="centered-box">
     <h1>Sign In</h1>
 
+		<%= render "shared/errors" %>
+
     <form action="<%= session_url %>" method="post">
       <input
         type="hidden"
