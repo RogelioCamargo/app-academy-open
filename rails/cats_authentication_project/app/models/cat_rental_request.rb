@@ -8,6 +8,7 @@ class CatRentalRequest < ApplicationRecord
   validate :does_not_overlap_approved_request
 
   belongs_to :cat
+	belongs_to :user 
 
   after_initialize :assign_pending_status
 
@@ -141,14 +142,14 @@ class CatRentalRequest < ApplicationRecord
     return if self.denied?
 
     unless overlapping_approved_requests.empty?
-      errors[:base] <<
-        'Request conflicts with existing approved request'
+      errors.add(:base,
+        'Request conflicts with existing approved request')
     end
   end
 
   def start_must_come_before_end
     return if start_date < end_date
-    errors[:start_date] << 'must come before end date'
-    errors[:end_date] << 'must come after start date'
+    errors.add(:start_date, 'must come before end date')
+    errors.add(:end_date, 'must come after start date')
   end
 end
