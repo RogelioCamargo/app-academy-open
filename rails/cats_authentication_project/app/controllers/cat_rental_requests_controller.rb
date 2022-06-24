@@ -1,4 +1,6 @@
 class CatRentalRequestsController < ApplicationController
+	before action :require_user! 
+	before_action :require_cat_ownership!, only: [:approve, :deny]
   def approve
     current_cat_rental_request.approve!
     redirect_to cat_url(current_cat)
@@ -6,11 +8,12 @@ class CatRentalRequestsController < ApplicationController
 
   def create
     @rental_request = CatRentalRequest.new(cat_rental_request_params)
+		@rental_request.user_id = current_user.id
     if @rental_request.save
       redirect_to cat_url(@rental_request.cat)
     else
       flash.now[:errors] = @rental_request.errors.full_messages
-      render :new
+      render :new, status: unprocessable_entity
     end
   end
 
@@ -33,6 +36,11 @@ class CatRentalRequestsController < ApplicationController
   def current_cat
     current_cat_rental_request.cat
   end
+
+	def require_cat_ownership! 
+		return if current_user.owns_cat?(current_cat)
+		redirect_to cat_url(current_cat)
+	end
 
   def cat_rental_request_params
     params.require(:cat_rental_request).permit(:cat_id, :end_date, :start_date, :status)

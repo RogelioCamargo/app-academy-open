@@ -3,9 +3,15 @@ class User < ApplicationRecord
 	validates :password_digest, presence: { message: "Password can't be blank" }
 	validates :password, length: { minimum: 6, allow_nil: true }
 
+	
 	attr_reader :password
-
+	
+	has_many :cats 
 	after_initialize :ensure_session_token 
+
+	def owns_cat?(cat)
+    cat.user_id == self.id
+  end
 
 	def self.generate_session_token 
 		SecureRandom.urlsafe_base64(16)
