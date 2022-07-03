@@ -5,11 +5,11 @@ class SessionsController < ApplicationController
 
 	def create 
 		user = User.find_by_credentials(
-			params[:email], 
-			params[:password]
+			params[:user][:email], 
+			params[:user][:password]
 		)
 		if user.nil? 
-			flash.now[:errors] = user.errors.full_messages
+			flash.now[:errors] = ['Invalid credentials']
 			render :new 
 		else
 			login_user!(user)
