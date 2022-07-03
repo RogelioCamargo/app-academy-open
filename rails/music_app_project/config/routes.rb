@@ -15,4 +15,6 @@ Rails.application.routes.draw do
 	end
 
 	resources :tracks, except: %i(new)
+
+	resources :notes, only: %i(new create)
 end
