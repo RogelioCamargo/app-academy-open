@@ -1,7 +1,6 @@
 <% action_url = track.persisted? ? track_url(track) : tracks_url %>
 <% http_method = track.persisted? ? "PATCH" : "POST" %>
 
-
 <form class='form' action="<%= action_url %>" method="POST" %>
   <input type="hidden" name="_method" value="<%= http_method %>">
   <input

@@ -20,7 +20,7 @@ class TracksController < ApplicationController
     else
       @album = @track.album
       flash.now[:errors] = @track.errors.full_messages
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -35,7 +35,7 @@ class TracksController < ApplicationController
       redirect_to track_url(@track)
     else
       flash.now[:errors] = @track.errors.full_messages
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
