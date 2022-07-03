@@ -4,4 +4,12 @@
 <ul>
   <li><a href="<%= new_album_track_url(@album) %>">New track</a></li>
   <li><a href="<%= edit_album_url(@album) %>">Edit album</a></li>
+	<li>
+	<form action="<%= album_url(@album) %>" method="POST">
+		<input type="hidden" name="_method" value="DELETE">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" >
+		<input type="submit" value="Destroy Album">
+	</form>
+  </li>
+  <li><a href="<%= band_url(@album.band) %>">Back to <%= @album.band.name %></a></li>
 </ul>
