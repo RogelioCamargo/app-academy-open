@@ -16,5 +16,5 @@ Rails.application.routes.draw do
 
 	resources :tracks, except: %i(new)
 
-	resources :notes, only: %i(new create)
+	resources :notes, only: %i(create destroy)
 end
