@@ -1,5 +1,17 @@
 <h1><%= @band.name %></h1>
 
+<h4 class='sub-header'>Albums</h4>
+
+<% if @band.albums.length > 0 %>
+  <ul>
+  <% @band.albums.each do |album| %>
+    <li><a href="<%= album_url(album) %>"><p><%= album.name %></p></a></li>
+  <% end %>
+  </ul>
+<% else %>
+  <p>This band has no albums... yet!</p>
+<% end %>
+
 <h4>Links</h4>
 <ul>
   <li><a href="<%= new_band_album_url(@band) %>">New album</a></li>

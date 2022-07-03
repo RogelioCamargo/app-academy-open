@@ -1,4 +1,5 @@
 class AlbumsController < ApplicationController 
+	before_action :require_user!
   def show
     @album = Album.find(params[:id])
     render :show

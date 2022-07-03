@@ -1,5 +1,15 @@
 <h1><%= @album.name %></h1>
 
+<% if @album.tracks.length > 0 %>
+<ul>
+  <% @album.tracks.each do |track| %>
+    <li><a href="<%= track_url(track) %>"><p><%= track.name %></p></a></li>
+  <% end %>
+</ul>
+<% else %>
+  <p>This album has no tracks... yet!</p> 
+<% end %>
+
 <h4>Links</h4>
 <ul>
   <li><a href="<%= new_album_track_url(@album) %>">New track</a></li>
