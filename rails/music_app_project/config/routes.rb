@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-
+	root to: redirect('/bands')
+	
 	resources :users, only: %i(new create show)
 	resource :session, only: %i(new create destroy)
 	resources :bands do 
@@ -13,5 +14,5 @@ Rails.application.routes.draw do
 		resources :tracks, only: %i(new)
 	end
 
-	resource :tracks, except: %i(new)
+	resources :tracks, except: %i(new)
 end
