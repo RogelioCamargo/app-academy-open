@@ -11,6 +11,21 @@
   </head>
 
   <body>
+		<nav>
+			<% if logged_in? %>
+				<form action="<%= session_url %>" method="post">
+					<input type="hidden" name="_method" value="delete">
+					<input
+              type="hidden"
+              name="authenticity_token"
+              value="<%= form_authenticity_token %>">
+					<input type="submit" value="Logout">
+				</form>
+			<% else %>
+				<%= link_to "Login", new_session_url %>
+				<%= link_to "Register", new_user_url %>
+			<% end %>
+		</nav>
     <%= yield %>
   </body>
 </html>
