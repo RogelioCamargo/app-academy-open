@@ -9,5 +9,9 @@ Rails.application.routes.draw do
 		resources :albums, only: %i(new)
 	end
 
-	resources :albums, except: %i(new)
+	resources :albums, except: %i(new) do 
+		resources :tracks, only: %i(new)
+	end
+
+	resource :tracks, except: %i(new)
 end
