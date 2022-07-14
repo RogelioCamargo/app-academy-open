@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.js"></script>
+	
+	<ul class="cool-things">
+		<li>
+			A cool thing
+			<span>This gets moused over</span>
+		</li>
+	</ul>
+	
+	<script>
+		$("ul").on("mouseover", "li", event => {
+			console.log(event.target);
+			console.log(event.currentTarget);
+			console.log(event.delegateTarget);
+		});
+	</script>
+</body>
+</html>
