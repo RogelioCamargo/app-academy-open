@@ -1,0 +1,67 @@
+* {
+	box-sizing: border-box;
+	margin: 0; 
+	padding: 0;
+}
+
+body {
+	text-align: center;
+}
+
+ul {
+	width: 300px; 
+	height: 300px;
+	display: flex;
+	flex-wrap: wrap;
+	list-style-type: none;
+	margin: 30px auto; 
+}
+
+li {
+	width: 100px; 
+	height: 100px;
+	border: 2px solid black;
+	background: gray;
+	cursor: pointer;
+}
+
+li:hover {
+	background: yellow;
+}
+
+.x,
+.o {
+	background: white;
+	cursor: default;
+}
+
+.x:hover,
+.o:hover {
+	background: white;
+}
+
+.x:after,
+.o:after {
+	display: block;
+	width: 100%;
+	font-size: 60px;
+	line-height: 80px;
+}
+
+.x:after {
+	content: "x";
+}
+
+.o:after {
+	content: "o";
+}
+
+.game-over li {
+	color: red;
+	cursor: default;
+	background: white;
+}
+
+figcaption {
+	font-size: 30px;
+}

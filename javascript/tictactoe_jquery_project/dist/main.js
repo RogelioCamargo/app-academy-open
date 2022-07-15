@@ -35,7 +35,7 @@ eval("const Board = __webpack_require__(/*! ./board */ \"./src/board.js\");\ncon
   \**********************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const View = __webpack_require__(/*! ./ttt-view */ \"./src/ttt-view.js\");\nconst Game = __webpack_require__(/*! ./game */ \"./src/game.js\"); \n\n  $(() => {\n    // Your code here\n  });\n\n\n//# sourceURL=webpack://ttt_jquery_project/./src/index.js?");
+eval("const View = __webpack_require__(/*! ./ttt-view */ \"./src/ttt-view.js\");\nconst Game = __webpack_require__(/*! ./game */ \"./src/game.js\");\n\n$(() => {\n\tconst root = $(\".ttt\");\n\tconst game = new Game();\n\tnew View(game, root);\n});\n\n\n//# sourceURL=webpack://ttt_jquery_project/./src/index.js?");
 
 /***/ }),
 
@@ -55,7 +55,7 @@ eval("\nconst MoveError = function (msg) { this.msg = msg; };\n\n// MoveError re
   \*************************/
 /***/ ((module) => {
 
-eval("class View {\n  constructor(game, $el) {}\n\n  bindEvents() {}\n\n  makeMove($square) {}\n\n  setupBoard() {}\n}\n\nmodule.exports = View;\n\n\n//# sourceURL=webpack://ttt_jquery_project/./src/ttt-view.js?");
+eval("class View {\n\tconstructor(game, $el) {\n\t\tthis.game = game;\n\t\tthis.$el = $el;\n\n\t\tthis.setupBoard();\n\t\tthis.bindEvents();\n\t}\n\n\tbindEvents() {\n\t\tthis.$el.on(\"click\", \"li\", (event) => {\n\t\t\tconst $square = $(event.currentTarget);\n\t\t\tthis.makeMove($square);\n\t\t});\n\t}\n\n\tmakeMove($square) {\n\t\tconst pos = $square.data(\"pos\");\n\t\tconst currentPlayer = this.game.currentPlayer;\n\n\t\ttry {\n\t\t\tthis.game.playMove(pos);\n\t\t} catch (error) {\n\t\t\talert(\"This \" + error.msg.toLowerCase());\n\t\t}\n\n\t\t$square.addClass(currentPlayer);\n\n\t\tif (!this.game.isOver()) return;\n\n\t\tthis.$el.off(\"click\"); // remove event handler \n\t\tthis.$el.addClass(\"game-over\");\n\n\t\tconst winner = this.game.winner();\n\t\tconst $figcaption = $(\"<figcaption>\");\n\n\t\tif (winner) $figcaption.html(`You win, ${winner.toUpperCase()}!`);\n\t\telse $figcaption.html(\"It's a draw!\");\n\n\t\tthis.$el.append($figcaption); \n\t}\n\n\tsetupBoard() {\n\t\tconst $ul = $(\"<ul>\");\n\t\tfor (let i = 0; i < 3; i++) {\n\t\t\tfor (let j = 0; j < 3; j++) {\n\t\t\t\tconst $li = $(\"<li>\");\n\t\t\t\t$li.data(\"pos\", [i, j]);\n\t\t\t\t$ul.append($li);\n\t\t\t}\n\t\t}\n\t\tthis.$el.append($ul);\n\t}\n}\n\nmodule.exports = View;\n\n\n//# sourceURL=webpack://ttt_jquery_project/./src/ttt-view.js?");
 
 /***/ })
 
