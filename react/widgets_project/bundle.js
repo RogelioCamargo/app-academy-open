@@ -32,10 +32,14 @@ function Clock() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(new Date()),
       _useState2 = _slicedToArray(_useState, 2),
       date = _useState2[0],
-      setDate = _useState2[1]; // useEffect(() => {
-  // 	const interval = setInterval(tick, 1000); 
-  // }, []);
+      setDate = _useState2[1];
 
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var interval = setInterval(tick, 1000);
+    return function () {
+      clearInterval(interval);
+    };
+  }, []);
 
   var tick = function tick() {
     setDate(new Date());
