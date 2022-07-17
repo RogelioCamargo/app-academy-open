@@ -27,7 +27,6 @@ function Root() {
 	return (
 		<div>
 			<Clock />
-			<br />
 			<Tabs data={data} />
 		</div>
 	);
