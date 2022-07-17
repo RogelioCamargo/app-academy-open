@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 
 function Clock() {
 	const [date, setDate] = useState(new Date()); 
-	useEffect(() => {
-		const interval = setInterval(tick, 1000); 
-		return () => { clearInterval(interval); }
-	}, []);
+	// useEffect(() => {
+	// 	const interval = setInterval(tick, 1000); 
+	// 	return () => { clearInterval(interval); }
+	// }, []);
 
 	const tick = () => {
 		setDate(new Date())
