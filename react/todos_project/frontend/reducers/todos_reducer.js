@@ -1,4 +1,8 @@
-const { RECEIVE_TODO, RECEIVE_TODOS } = require("../actions/todo_actions");
+const {
+	RECEIVE_TODO,
+	RECEIVE_TODOS,
+	DELETE_TODO,
+} = require("../actions/todo_actions");
 
 const initialState = {
 	1: {
@@ -17,16 +21,20 @@ const initialState = {
 
 const todosReducer = (state = initialState, action) => {
 	Object.freeze(state);
-	let newState = {};
+	let nextState = {};
 	switch (action.type) {
 		case RECEIVE_TODOS:
 			action.todos.forEach((todo) => {
-				newState[todo.id] = todo;
+				nextState[todo.id] = todo;
 			});
-			return newState;
+			return nextState;
 		case RECEIVE_TODO:
 			const newTodo = { [action.todo.id]: action.todo };
-			return Object.assign({}, state, newTodo); 
+			return Object.assign({}, state, newTodo);
+		case DELETE_TODO:
+			nextState = Object.assign({}, state);
+			delete nextState[action.todo.id];
+			return nextState;
 		default:
 			return state;
 	}
