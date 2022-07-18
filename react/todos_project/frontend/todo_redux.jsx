@@ -1,5 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import configureStore from "./store/store";
+
+window.store = configureStore();
 
 const container = document.getElementById("root");
 const root = createRoot(container);
