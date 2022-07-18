@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import configureStore from "./store/store";
+import * as StepActions from "./actions/step_actions";
 
 window.store = configureStore();
 
