@@ -15,6 +15,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	// create action dispatcher
 	receiveTodo: (todo) => dispatch(receiveTodo(todo)),
+	removeTodo: (todo) => dispatch(removeTodo(todo)),
 });
 
 const TodoListContainer = connect(
