@@ -13,8 +13,10 @@ const TodoForm = ({ receiveTodo }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log(newTodo);
-		const todo = Object.assign({}, newTodo, { id: uniqueId() });
-		receiveTodo(todo);
+		receiveTodo({
+			id: uniqueId(),
+			...newTodo
+		});
 		setNewTodo({
 			title: "",
 			body: "",
