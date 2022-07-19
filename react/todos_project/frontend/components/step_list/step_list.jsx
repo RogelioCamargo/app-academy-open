@@ -1,10 +1,11 @@
 import React from "react";
+import StepListItemContainer from "./step_list_item_container";
 
 const StepList = ({ steps, todo_id, receiveStep }) => {
 	return (
 		<div>
 			<ul>
-				{steps.map(step => <li>{step.title}</li>)}
+				{steps.map(step => <StepListItemContainer step={step} />)}
 			</ul>
 		</div>
 	);

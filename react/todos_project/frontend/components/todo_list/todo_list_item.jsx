@@ -15,11 +15,11 @@ const TodoListItem = ({ todo, receiveTodo }) => {
 
 	return (
 		<li>
-			<span>
+			<h3>
 				<a onClick={() => setShowDetails((previousState) => !previousState)}>
 					{todo.title}
 				</a>
-			</span>
+			</h3>
 			<button onClick={toggleComplete}>
 				{todo.done ? "Not Done" : "Done"}
 			</button>
