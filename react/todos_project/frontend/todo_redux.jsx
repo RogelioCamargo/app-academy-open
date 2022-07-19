@@ -4,7 +4,6 @@ import Root from "./components/root";
 import configureStore from "./store/store";
 
 const store = configureStore();
-window.store = store; 
 
 const container = document.getElementById("root");
 const root = createRoot(container);

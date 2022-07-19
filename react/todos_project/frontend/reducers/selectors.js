@@ -1,3 +1,4 @@
-export const allTodos = (state) => Object.values(state.todos);
+export const allTodos = ({ todos }) => Object.values(todos);
 
-window.allTodos = allTodos;
+export const stepsByTodoId = ({ steps }, todoId) =>
+	Object.values(steps).filter((step) => step.todo_id === todoId);
