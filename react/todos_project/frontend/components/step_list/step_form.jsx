@@ -9,7 +9,7 @@ const StepForm = ({ todo_id, receiveStep }) => {
 		todo_id: todo_id,
 	});
 
-	const update = (property) => (e) => setNewStep({ ...newStep, [property]: e.target.value });
+	const handleChange = (property) => (e) => setNewStep({ ...newStep, [property]: e.target.value });
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -31,11 +31,11 @@ const StepForm = ({ todo_id, receiveStep }) => {
 		<form onSubmit={handleSubmit}>
 			<label>
 				Title
-				<input type="text" value={newStep.title} onChange={update("title")} />
+				<input type="text" value={newStep.title} onChange={handleChange("title")} />
 			</label>
 			<label>
 				Description
-				<input type="text" value={newStep.body} onChange={update("body")} />
+				<input type="text" value={newStep.body} onChange={handleChange("body")} />
 			</label>
 			<button>Submit</button>
 		</form>

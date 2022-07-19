@@ -22,7 +22,3 @@ export const removeStep = (step) => {
 		step,
 	};
 };
-
-window.receiveSteps = receiveSteps;
-window.receiveStep = receiveStep;
-window.removeStep = removeStep;
