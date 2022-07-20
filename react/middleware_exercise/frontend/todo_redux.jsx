@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		: {};
 	let store = configureStore(preloadedState);
 	// store.dispatch = addLoggingToDispatch(store);
-	window.store = store;
-	store = applyMiddlewares(store, addLoggingToDispatch);
+	// window.store = store;
+	// store = applyMiddlewares(store, addLoggingToDispatch);
 	const root = document.getElementById("content");
 	ReactDOM.render(<Root store={store} />, root);
 });
